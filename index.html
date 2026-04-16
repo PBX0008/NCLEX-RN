@@ -1,4050 +1,2699 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title> NCLEX-RN</title>
-
-<style>
-/* Prevent text selection and copying */
-* {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-/* Allow selection in input/textarea for user input */
-input, textarea, select {
-  -webkit-user-select: auto;
-  -moz-user-select: auto;
-  -ms-user-select: auto;
-  user-select: auto;
-}
-
-:where(*) {
-  -webkit-user-select: none;
-  user-select: none;
-}
-
-:where(input, textarea, select) {
-  -webkit-user-select: auto;
-  user-select: auto;
-}
-
-*{ box-sizing:border-box; }
-
-body{
-  margin:0;
-  font-family: Helvetica Neue, Arial,  sans-serif;
-  background:#eef3f8;
-  overflow:hidden;
-  transition: background-color 0.5s ease, color 0.5s ease;
-  line-height: 1.6;
-}
-
-:root{
-  --navy: #0067A9;       /* Darker Navy from top/bottom bars */
-  --navy-light: #7cafe8; /* Lighter Blue from Calculator/Question strip */
-  --google-blue: #0066CC;
-  --calc-red: #8b0000;
-  --calc-blue: #004080;
-  --glass: rgba(255, 255, 255, 0.8);
-  --bg-main: #eef3f8;
-  --bg-left: #ffffff;
-  --bg-right: #ffffff;
-  --text-main: #111111;
-  --border-color: #ffffff;
-}
-
-/* Night Mode Theme */
-body.night-mode {
-  --navy: #1a1a1a;
-  --navy-light: #161616;
-  --glass: rgba(30, 30, 50, 0.85);
-  --bg-main: #0a0a14;
-  --bg-left: #121212;
-  --bg-right: #0f0f0f;
-  --text-main: #e0e0e0;
-  --border-color: #2a2a2a;
-  background: var(--bg-main);
-}
-
-body.night-mode .topbar,
-body.night-mode .bottombar {
-  background: linear-gradient(180deg, #1d1d1d 0%, #141414 100%);
-  border-bottom-color: #2a2a2a;
-}
-
-body.night-mode .calc-strip {
-  background: linear-gradient(180deg, #1d1d1d 0%, #1a1a1a 100%);
-  border-bottom-color: #2a2a2a;
-  border-left-color: #2a2a2a;
-  border-right-color: #2a2a2a;
-}
-
-body.night-mode .left {
-  background: var(--bg-left);
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-body.night-mode #rightPanel {
-  background: var(--bg-left) !important;
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-body.night-mode .divider {
-  background: #666666;
-}
-
-body.night-mode .nav-link {
-  background-color: #1a1a1a;
-  color: #a0a0c0;
-  border-color: #2a2a2a;
-}
-
-body.night-mode .nav-link:hover {
-  background-color: #252525;
-}
-
-body.night-mode .nav-link.active {
-  background-color: #0f0f0f;
-  color: #e0e0e0;
-  border-color: #2a2a2a #2a2a2a #0f0f0f;
-}
-
-body.night-mode .tab-content {
-  background: #121212;
-  border-color: #2a2a2a;
-  color: #e0e0e0;
-}
-
-body.night-mode table th {
-  background-color: #ff6161;
-  color: #e0e0e0;
-}
-
-body.night-mode table td {
-  background: #121212;
-  border-color: #2a2a2a;
-  color: #c0c0c0;
-}
-
-body.night-mode .option:hover {
-  background: transparent;
-  transform: none;
-  box-shadow: none;
-}
-
-body.night-mode .option::before {
-  border-color: #4a4a4a;
-}
-
-body.night-mode .option.selected {
-  background: transparent !important;
-  box-shadow: none;
-}
-
-body.night-mode .option.selected::before {
-  background: #116FAA;
-  border-color: #116FAA;
-}
-
-body.night-mode .qtext,
-body.night-mode #question,
-body.night-mode #caseStudyContainer {
-  color: #e0e0e0;
-  padding: 10px;
-}
-
-/* Question Text Area - More Specific Styling */
-body.night-mode .qtext,
-body.night-mode #question {
-  background: transparent;
-  padding: 10px;
-  border-radius: 0;
-  border: none;
-  box-shadow: none;
-  line-height: 1.8;
-}
-
-body.night-mode #caseStudyContainer {
-  background: transparent;
-  border-bottom: none;
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
-}
-
-/* Answer Options - Enhanced Styling */
-body.night-mode #questionResultBox {
-  background: #1a1a1a !important;
-  border: 1px solid #2a2a2a !important;
-  border-left: 8px solid #2a2a2a !important;
-  color: #e0e0e0;
-  box-shadow: 1px 1px 50px rgba(0, 0, 0, 0.5) !important;
-}
-
-body.night-mode #questionResultBox.correct-answer {
-  background: #1a1a1a !important;
-  border-left-color: #28a745 !important;
-}
-
-body.night-mode #questionResultBox.incorrect-answer {
-  background: #1a1a1a !important;
-  border-left-color: #dc3545 !important;
-}
-
-body.night-mode #questionResultBox.partial-answer {
-  background: #1a1a1a !important;
-  border-left-color: #ffa500 !important;
-}
-
-body.night-mode #questionResultBox .result-item b {
-  color: #ffffff;
-}
-
-body.night-mode #questionResultBox .result-item {
-  color: #e0e0e0;
-}
-
-body.night-mode #questionResultBox .result-item b {
-  color: #ffffff;
-}
-
-body.night-mode .ngn-select {
-  background: #1a1a1a;
-  color: #e0e0e0;
-  border-color: #3a3a3a;
-}
-
-body.night-mode .ngn-dropdown-select {
-  background: linear-gradient(to bottom, #1a1a1a 0%, #121212 100%);
-  color: #e0e0e0;
-  border-color: #3a3a3a;
-}
-
-body.night-mode .ngn-element-container {
-  background: linear-gradient(135deg, #1a1a1a 0%, #121212 100%);
-  border-color: #2a2a2a;
-}
-
-body.night-mode .ngn-interactive-table td {
-  background: #121212;
-  border-color: #2a2a2a;
-}
-
-body.night-mode .ngn-interactive-table tr:hover td {
-  background: #1a1a1a;
-}
-
-/* Night Mode - Separators */
-body.night-mode .strip-separator {
-  background: #3a3a3a;
-}
-
-body.night-mode .footer-separator {
-  background: #3a3a3a;
-}
-
-/* Night Mode - Option Checkbox */
-body.night-mode .option::before {
-  background: #2a2a2a;
-  border-color: #4a4a4a;
-}
-
-/* Night Mode - Slider Thumbs */
-body.night-mode .ngn-slider::-webkit-slider-thumb {
-  background: #3a3a3a;
-  border-color: #4a4a4a;
-}
-
-body.night-mode .ngn-slider::-moz-range-thumb {
-  background: #3a3a3a;
-  border-color: #4a4a4a;
-}
-
-/* Night Mode - Radio Button */
-body.night-mode .ngn-radio-option input[type="radio"]:checked::after {
-  background: #e0e0e0;
-}
-
-body.night-mode #calculator {
-  background: #1a1a1a;
-}
-
-body.night-mode #calc-header {
-  background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
-  color: #e0e0e0;
-}
-
-body.night-mode #calc-display {
-  background: #0f0f0f;
-  color: #e0e0e0;
-}
-
-body.night-mode .calc-btn {
-  background: #2a2a2a;
-  color: #e0e0e0;
-}
-
-body.night-mode .calc-btn.op {
-  background: #8b0000;
-}
-
-body.night-mode .calc-btn.eq {
-  background: #004080;
-}
-
-/* Scrollbar Styling for Night Mode */
-body.night-mode ::-webkit-scrollbar {
-  width: 10px;
-}
-
-body.night-mode ::-webkit-scrollbar-track {
-  background: #1a1a1a;
-}
-
-body.night-mode ::-webkit-scrollbar-thumb {
-  background: #3a3a3a;
-  border-radius: 5px;
-}
-
-body.night-mode ::-webkit-scrollbar-thumb:hover {
-  background: #4a4a4a;
-}
-
-body.night-mode #calc-display {
-  background: #0f0f0f;
-  color: #e0e0e0;
-}
-
-body.night-mode .calc-btn {
-  background: #2a2a2a;
-  color: #e0e0e0;
-}
-
-body.night-mode .calc-btn.op {
-  background: #8b0000;
-}
-
-body.night-mode .calc-btn.eq {
-  background: #004080;
-}
-
-body.night-mode #aiModal {
-  background: rgba(20, 20, 35, 0.9);
-}
-
-body.night-mode .ai-header {
-  background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
-}
-
-/* Night Mode Toggle in Calc Strip */
-.night-toggle-strip {
-  cursor: pointer;
-  font-size: 16px;
-  opacity: 0.9;
-  transition: opacity 0.3s ease;
-}
-
-.night-toggle-strip:hover {
-  opacity: 0.7;
-}
-
-body.night-mode .night-toggle-strip .modeEmojiStrip {
-  filter: grayscale(1) brightness(1.5);
-}
-
-
-/* TOP BAR */
-.topbar{
-  height:68px;
-  background:var(--navy);
-  color:white;
-  padding:0 14px;
-  display:grid;
-  grid-template-columns:minmax(260px, 1fr) auto minmax(260px, 1fr);
-  align-items:center;
-  border-bottom:2px solid white;
-  transition: background-color 0.5s ease, color 0.5s ease;
-}
-.top-left{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  min-width:0;
-  font-size:15px;
-  font-weight:800;
-  white-space:nowrap;
-}
-.top-left-title{
-  display:flex;
-  align-items:center;
-  gap:4px;
-  min-width:0;
-  font-weight:700;
-}
-.top-left-badge{
-  display:none;
-}
-
-/* METALLIC GLARE EFFECT */
-@keyframes metalGlare {
-  0% {
-    color: white;
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-  }
-  25% {
-    color: #FFD700;
-    text-shadow: 0 0 15px rgba(255, 255, 0, 0.8),
-                 0 0 30px rgba(255, 255, 0, 0.6);
-  }
-  50% {
-    color: white;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.9),
-                 0 0 80px rgba(255, 255, 255, 0.7);
-  }
-  75% {
-    color: #FFD700;
-    text-shadow: 0 0 150px rgba(255, 255, 0, 0.8),
-                 0 0 300px rgba(255, 255, 0, 0.6);
-  }
-  100% {
-    color: white;
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-  }
-}
-.top-left.glare-active {
-  animation: metalGlare 6s ease-in-out infinite;
-}
-
-/* GLARING YELLOW-RED EFFECT */
-@keyframes glarYellowRed {
-  0% {
-    color: inherit;
-    text-shadow: 0 0 2px rgba(255, 255, 0, 0.3);
-  }
-  25% {
-    color: #FFD700;
-    text-shadow: 0 0 10px rgba(255, 255, 0, 0.8),
-                 0 0 20px rgba(255, 215, 0, 0.6),
-                 inset 0 0 8px rgba(255, 255, 0, 0.4);
-  }
-  50% {
-    color: #FFA500;
-    text-shadow: 0 0 15px rgba(255, 165, 0, 0.8),
-                 0 0 25px rgba(255, 140, 0, 0.6),
-                 inset 0 0 10px rgba(255, 140, 0, 0.4);
-  }
-  75% {
-    color: #f8a98c;
-    text-shadow: 0 0 15px rgba(255, 69, 0, 0.8),
-                 0 0 25px rgba(255, 114, 142, 0.644),
-                 inset 0 0 10px rgb(255, 112, 112);
-  }
-  100% {
-    color: inherit;
-    text-shadow: 0 0 2px rgba(255, 94, 94, 0.555);
-  }
-}
-
-.pbx-glare {
-  animation: glarYellowRed 3s ease-in-out infinite;
-  font-weight: bold;
-  display: inline-block;
-}
-.top-center{
-  position:static;
-  left:auto;
-  transform:none;
-  justify-self:center;
-  text-align:center;
-  color:white;
-  font-weight:700;
-  line-height:1.2;
-}
-.top-center .meta-line{
-  font-size:15px;
-  font-weight:700;
-  cursor:pointer;
-}
-.top-center .qid-line{
-  font-size:14px;
-  margin-top:4px;
-  font-weight:700;
-}
-
-#typewriter {
-  display:none;
-}
-.cursor-blink { animation: blink 0.7s infinite; }
-@keyframes blink { 50% { border-color: transparent; } }
-
-.top-right{
-  justify-self:end;
-  display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-  gap:5px;
-}
-.status-row{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:15px;
-  line-height:0.8;
-  color:white;
-  cursor:pointer;
-  padding:1px 0;
-  border:none;
-  font-weight:700;
-  transition: color 0.2s ease;
-}
-.status-label{
-  min-width:72px;
-  text-align:right;
-  font-weight:700;
-}
-.status-icon{
-  display:none;
-}
-.status-value{
-  font-weight:700;
-  white-space:nowrap;
-}
-.status-row:hover{
-  color:#ffe45c;
-}
-
-/* Calc strip removed to keep only dark blue top tab */
-
-/* --- CASE STUDY TABS STYLING --- */
-#caseStudyContainer {
-  margin-bottom: 20px;
-  border-bottom: 4px solid #eef3f8;
-  padding: 15px 15px 15px 15px;
-  display: none;
-  font-size: 16px;
-  line-height: 1.8;
-  color: #333;
-  font-weight: 500;
-}
-.nav-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  padding-left: 0;
-  margin-bottom: 0;
-  list-style: none;
-  border-bottom: 1px solid #dee2e6;
-}
-.nav-item { margin-bottom: -1px; }
-.nav-link {
-  display: block;
-  padding: 8px 16px;
-  border: 1px solid transparent;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  text-decoration: none;
-  color: var(--navy);
-  background-color: #f8f9fa;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: bold;
-  margin-right: 2px;
-}
-.nav-link:hover { border-color: #e9ecef #e9ecef #dee2e6; }
-.nav-link.active {
-  color: #495057;
-  background-color: #fff;
-  border-color: #dee2e6 #dee2e6 #fff;
-}
-.tab-content { padding: 15px; border: 1px solid #dee2e6; border-top: none; font-size: 16px; line-height: 1.8; }
-.tab-pane { display: none; }
-.tab-pane.active { display: block; animation: fadeIn 0.3s; }
-@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-
-/* --- NGN ELEMENT STYLING --- */
-table { border-collapse: collapse; width: 100%; font-size: 13px; margin: 10px 0; }
-th, td { border: 1px solid #dee2e6; padding: 8px; text-align: left; }
-th { background-color: #f1f3f5; }
-select.ngn-select {
-    padding: 5px; border: 1px solid var(--navy); border-radius: 4px; background: #eef; font-weight: bold; max-width: 100%;
-}
-
-/* MAIN LAYOUT */
-.main{
-  height:calc(100vh - 76px - 40px - 40px);
-  display:grid;
-  grid-template-columns:1fr 0 0;
-}
-
-.left, #rightPanel{
-  overflow-y:auto;
-  overflow-x:hidden;
-  padding:24px;
-  padding-bottom: 60px;
-  transition: background-color 0.5s ease, color 0.5s ease;
-}
-.left{ background:white; }
-#rightPanel{ background:white !important; }
-
-/* VERTICAL DIVIDER - SIMPLE GREY LINE */
-.divider {
-  height: 100%;
-  width: 1px;
-  background: #888888;
-  user-select: none;
-  pointer-events: none;
-  transition: background 0.5s ease;
-  display: none;
-}
-
-#rightPanel {
-  display: none;
-}
-
-/* Show divider and right when question is submitted */
-.main.show-result {
-  grid-template-columns: 1fr 1px 1fr;
-}
-
-.main.show-result .divider,
-.main.show-result #rightPanel {
-  display: block;
-}
-
-.left img, #rightPanel img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 15px 0;
-}
-
-/* BLUE TEXT STYLING */
-.blue-search {
-  color: var(--google-blue);
-  text-decoration: underline;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-body.night-mode .blue-search {
-  color: #6fa8dc;
-}
-
-/* Explanation text in night mode */
-body.night-mode #explanation {
-  color: #e0e0e0;
-}
-
-/* Explanation metadata (Topic, Subject with NCSBN) */
-.exp-meta {
-  margin-top: 20px;
-  padding-top: 15px;
-  border-top: 1px solid #dee2e6;
-}
-
-.exp-topic {
-  margin-bottom: 8px;
-  font-size: 16px;
-  color: #242424;
-}
-
-.exp-subject {
-  margin-bottom: 8px;
-  font-size: 14px;
-  color: #888;
-}
-
-body.night-mode .exp-topic {
-  color: #888;
-}
-
-body.night-mode .exp-subject {
-  color: #666;
-}
-
-/* Hide subject and topic from result box (now shown in explanation) */
-#ind-subject, #ind-topic {
-  display: none;
-}
-
-#questionResultBox .result-item:has(#ind-subject),
-#questionResultBox .result-item:has(#ind-topic) {
-  display: none;
-}
-
-/* OPTIONS */
-.option {
-    border: none !important;
-    padding: 10px 5px 10px 50px;
-    margin-bottom: 8px;
-    cursor: default;
-    position: relative;
-    background: transparent !important;
-    transition: none;
-    color: #000000;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    line-height: 1.3;
-}
-
-body.night-mode .option {
-  background: transparent !important;
-  color: #e0e0e0;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-  padding: 10px 5px 10px 50px;
-  margin-bottom: 8px;
-  line-height: 1.5;
-}
-
-.option::before {
-  content: "";
-  width: 22px;
-  height: 22px;
-  border: 2px solid #ffffff;
-  border-radius: 4px;
-  position: absolute;
-  left: 22px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: #ffffff;
-  box-shadow: inset 0 0 0 1px #41414154;
-}
-
-body.night-mode .option::before {
-  border-color: #41414154;
-  background: #41414154;
-  box-shadow: inset 0 0 0 2px #ffffff;
-}
-
-.option.selected::before {
-  background: #92c5ff;
-  border-color: #ffffff;
-  box-shadow: inset 0 0 0 1px #41414154, inset 0 0 0 4px #ffffff;
-}
-
-body.night-mode .option.selected::before {
-    background: #304961;
-    border-color: #000000a4;
-    box-shadow: inset 0 0 0 1px #ffffff, inset 0 0 0 4px #1a1a2e;
-}
-.option.correct { background: transparent !important; color: #333; }
-.option.wrong { background: transparent !important; color: #333; }
-
-body.night-mode .option.correct { background: transparent !important; color: #e0e0e0; }
-body.night-mode .option.wrong { background: transparent !important; color: #e0e0e0; }
-
-/* CORRECT/WRONG INDICATORS - Using ::after to avoid conflict with checkbox */
-.option.correct::after {
-  content: "✓";
-  position: absolute;
-  left: 0px;
-  top: 50%;
-  transform: translateY(-50%) scaleX(1.1); /* stretch horizontally */
-  transform-origin: center;
-  width: 25px;
-  line-height: 1;
-  text-align: center;
-  font-size: 27px;
-  color: #1bad22;
-}
-
-.option.wrong::after {
-  content: "×";
-  position: absolute;
-  left: 0px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 20px;
-  line-height: 1;
-  text-align: center;
-  font-size: 35px;
-  color: #ff2828;
-}
-
-/* INDIVIDUAL QUESTION RESULT BOX (FROM IMAGE) */
-#questionResultBox {
-  display: none;
-  background: #ffffff;
-  border: 1px solid #ffffff;
-  border-left: 8px solid #ffffff;
-  margin-top: 20px;
-  padding: 4px;
-  font-size: 16px;
-  color: #000000;
-  box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.315);
-
-}
-
-.result-flex {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  text-align: center;
-}
-
-.result-item b {
-  display: block;
-  font-size: 16px;
-  color: #000000;
-}
-
-body.night-mode .result-item b {
-  color: #ffffff !important;
-}
-
-body.night-mode .result-item {
-  color: #ffffff !important;
-}
-
-#questionResultBox.correct-answer {
-  background: #ffffff !important;
-  border-left-color: #0b6e10 !important;
-}
-
-#questionResultBox.incorrect-answer {
-  background: #ffffff !important;
-  border-left-color: #c91818 !important;
-}
-
-#questionResultBox.partial-answer {
-  background: #ffffff !important;
-  border-left-color: oklch(72.408% 0.14758 86.617) !important;
-}
-
-.result-flex {
-  display: grid !important;
-  grid-template-columns: repeat(3, 1fr) !important;
-  gap: 5px !important;
-  align-items: center !important;
-  text-align: center !important;
-}
-
-.result-item {
-  padding: 8px !important;
-}
-
-.result-item b {
-  margin-bottom: 4px !important;
-}
-
-/* IN-APP AI POPUP (MODAL) */
-#aiModal {
-  position: fixed;
-  top: 60px;
-  right: -550px; /* Hidden by default */
-  width: 500px;
-  height: 80%;
-  background: var(--glass);
-  backdrop-filter: blur(20px);
-  border-radius: 15px 0 0 15px;
-  box-shadow: -10px 0 30px rgba(0,0,0,0.2);
-  z-index: 20000;
-  transition: right 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  display: flex;
-  flex-direction: column;
-  border: 1px solid rgba(255,255,255,0.3);
-}
-
-#aiModal.active { right: 0; }
-
-.ai-header {
-  padding: 15px;
-  background: var(--navy);
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  border-radius: 15px 0 0 0;
-  font-weight: bold;
-}
-
-.ai-body { flex: 1; position: relative; }
-.ai-body iframe { width: 100%; height: 100%; border: none; }
-
-.ai-loader {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  display: none;
-  text-align: center;
-}
-
-.spinner {
-  border: 4px solid rgba(255,255,255,0.3);
-  border-top: 4px solid var(--navy);
-  border-radius: 50%;
-  width: 40px; height: 40px;
-  animation: spin 1s linear infinite;
-  margin-bottom: 10px;
-}
-@keyframes spin { 100% { transform: rotate(360deg); } }
-
-
-/* BOTTOM BAR removed for mobile optimization */
-
-/* CALCULATOR */
-#calculator {
-  position: fixed;
-  top: 120px;
-  left: 88px;
-  width: 244px;
-  display: none;
-  z-index: 10000;
-  padding: 10px 10px 14px;
-  background: linear-gradient(180deg, #2a63c6 0%, #2359b7 54%, #1e4ea5 100%);
-  border: 2px solid #163f8f;
-  border-radius: 8px 8px 18px 18px;
-  box-shadow:
-    0 16px 28px rgba(18, 33, 76, 0.32),
-    inset 0 1px 0 rgba(255,255,255,0.22),
-    inset 0 -2px 0 rgba(8, 25, 67, 0.32);
-  user-select: none;
-}
-#calculator::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background:
-    linear-gradient(90deg, rgba(255,255,255,0.06) 0, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 9px),
-    linear-gradient(0deg, rgba(0,0,0,0.04) 0, rgba(0,0,0,0.04) 1px, transparent 1px, transparent 9px);
-  opacity: 0.15;
-  pointer-events: none;
-}
-#calc-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 136px;
-  cursor: move;
-  background: transparent;
-  z-index: 1;
-}
-#calc-close {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  width: 24px;
-  height: 24px;
-  border: none;
-  border-radius: 999px;
-  background: rgba(8, 23, 63, 0.92);
-  color: #fff;
-  font-size: 16px;
-  line-height: 1;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
-  opacity: 0;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  z-index: 4;
-}
-#calculator:hover #calc-close {
-  opacity: 1;
-}
-#calc-close:hover {
-  transform: scale(1.08);
-}
-.ti-face {
-  position: relative;
-  z-index: 2;
-}
-.ti-display-wrap {
-  margin-bottom: 10px;
-}
-#calc-display {
-  width: 100%;
-  height: 44px;
-  display: block;
-  border: none;
-  outline: none;
-  padding: 4px 8px;
-  border-radius: 3px;
-  background: linear-gradient(180deg, #d7d8cd 0%, #c2c7b5 100%);
-  box-shadow:
-    inset 0 0 0 2px #6e745f,
-    inset 0 2px 3px rgba(0,0,0,0.22);
-  color: #1c2018;
-  font-family: "Courier New", monospace;
-  font-size: 34px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-align: right;
-  pointer-events: none;
-}
-.ti-brand-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 8px;
-  color: #f4f7ff;
-  text-shadow: 0 1px 0 rgba(0,0,0,0.2);
-}
-.ti-brand-small {
-  font-size: 11px;
-  letter-spacing: 0.25px;
-}
-.ti-brand-big {
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 0.4px;
-}
-.ti-upper-lower {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 10px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(10, 26, 70, 0.42);
-}
-.ti-solar {
-  width: 98px;
-  height: 28px;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 2px;
-  padding: 2px;
-  border-radius: 2px;
-  background: linear-gradient(180deg, #0f1f46 0%, #091633 100%);
-  border: 1px solid rgba(5, 14, 36, 0.95);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
-}
-.ti-solar span {
-  display: block;
-  border-radius: 1px;
-  background: linear-gradient(180deg, #101524 0%, #05080f 100%);
-  box-shadow: inset 1px 0 0 rgba(255,255,255,0.06);
-}
-.ti-upper-spacer {
-  flex: 1;
-  height: 28px;
-}
-.calc-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-}
-.calc-btn {
-  position: relative;
-  height: 39px;
-  border: 1px solid #102554;
-  border-radius: 5px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 21px;
-  font-weight: 700;
-  line-height: 1;
-  cursor: pointer;
-  box-shadow:
-    0 2px 0 #102554,
-    inset 0 1px 0 rgba(255,255,255,0.55);
-  transition: transform 0.04s ease, box-shadow 0.04s ease;
-}
-.calc-btn:active {
-  transform: translateY(2px);
-  box-shadow:
-    0 0 0 #102554,
-    inset 0 1px 0 rgba(255,255,255,0.4);
-}
-.calc-btn-red {
-  color: #fff;
-  background:
-    radial-gradient(circle at 1px 1px, rgba(255,255,255,0.18) 0 1px, transparent 1.2px) 0 0/6px 6px,
-    linear-gradient(180deg, #d72543 0%, #be1430 100%);
-}
-.calc-btn-white {
-  color: #101726;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.42), rgba(255,255,255,0)) 0 0/100% 10px no-repeat,
-    repeating-linear-gradient(180deg, rgba(0,0,0,0.02) 0 2px, rgba(255,255,255,0.05) 2px 4px),
-    linear-gradient(180deg, #fcfdff 0%, #eef1f6 100%);
-}
-.calc-btn-small {
-  font-size: 14px;
-  letter-spacing: 0.2px;
-}
-.calc-btn-op {
-  font-size: 26px;
-}
-.calc-btn-equals {
-  grid-row: span 2;
-  height: auto;
-  min-height: 86px;
-  font-size: 30px;
-}
-.calc-btn-on {
-  font-size: 12px;
-}
-body.night-mode #calculator {
-  background: linear-gradient(180deg, #2a63c6 0%, #2359b7 54%, #1e4ea5 100%);
-  border-color: #163f8f;
-}
-body.night-mode #calc-display {
-  background: linear-gradient(180deg, #d7d8cd 0%, #c2c7b5 100%);
-  color: #1c2018;
-}
-body.night-mode .calc-btn,
-body.night-mode .calc-btn-red,
-body.night-mode .calc-btn-white {
-  color: inherit;
-}
-body.night-mode .calc-btn-red {
-  color: #fff;
-}
-body.night-mode .calc-btn-white {
-  color: #101726;
-}
-
-/* SLIDER & DROPDOWN STYLES FOR questionTypeId: 3 */
-.ngn-slider-container {
-  display: inline-block;
-  position: relative;
-  margin: 5px 0;
-  vertical-align: middle;
-}
-
-.ngn-slider {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 200px;
-  height: 8px;
-  border-radius: 4px;
-  background: linear-gradient(to right, #e0e0e0 0%, #e0e0e0 100%);
-  outline: none;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border: 1px solid #ccc;
-}
-
-.ngn-slider:hover {
-  background: linear-gradient(to right, #d0d0d0 0%, #d0d0d0 100%);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.ngn-slider.selected {
-  background: linear-gradient(to right, var(--navy) 0%, var(--navy-light) 100%);
-  border-color: var(--navy);
-}
-
-.ngn-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: white;
-  border: 2px solid var(--navy);
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  transition: all 0.2s ease;
-}
-
-.ngn-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.1);
-  background: var(--navy);
-}
-
-.ngn-slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: white;
-  border: 2px solid var(--navy);
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.ngn-slider-value {
-  display: inline-block;
-  min-width: 80px;
-  padding: 4px 10px;
-  background: var(--navy);
-  color: white;
-  border-radius: 4px;
-  font-weight: bold;
-  font-size: 13px;
-  margin-left: 10px;
-  vertical-align: middle;
-  text-align: center;
-}
-
-.ngn-dropdown {
-  position: relative;
-  display: inline-block;
-  vertical-align: middle;
-  margin: 5px 0;
-}
-
-.ngn-dropdown-select {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  min-width: 180px;
-  padding: 10px 35px 10px 12px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-  background: linear-gradient(to bottom, #fff 0%, #f8f9fa 100%);
-  border: 2px solid var(--navy);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.ngn-dropdown-select:hover {
-  border-color: var(--navy-light);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-.ngn-dropdown-select:focus {
-  outline: none;
-  border-color: var(--google-blue);
-  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
-}
-
-.ngn-dropdown-select.correct {
-  background: linear-gradient(to bottom, #d4edda 0%, #c3e6cb 100%);
-  border-color: #28a745;
-  color: #155724;
-}
-
-.ngn-dropdown-select.wrong {
-  background: linear-gradient(to bottom, #f8d7da 0%, #f5c6cb 100%);
-  border-color: #dc3545;
-  color: #721c24;
-}
-
-.ngn-dropdown::after {
-  content: "▼";
-  font-size: 10px;
-  color: var(--navy);
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.ngn-element-container {
-  display: inline-block;
-  margin: 8px 15px 8px 0;
-  padding: 12px 15px;
-  background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
-  border: 2px solid #e9ecef;
-  border-radius: 10px;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.ngn-element-container:hover {
-  border-color: var(--navy-light);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.ngn-element-label {
-  display: block;
-  font-size: 12px;
-  color: var(--navy);
-  font-weight: bold;
-  margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.ngn-interactive-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 8px;
-  margin: 15px 0;
-}
-
-.ngn-interactive-table th {
-  background: var(--navy);
-  color: white;
-  padding: 12px 15px;
-  text-align: left;
-  font-weight: 600;
-  font-size: 13px;
-}
-
-.ngn-interactive-table th:first-child {
-  border-radius: 8px 0 0 0;
-}
-
-.ngn-interactive-table th:last-child {
-  border-radius: 0 8px 0 0;
-}
-
-.ngn-interactive-table td {
-  background: white;
-  padding: 12px 15px;
-  border: 1px solid #dee2e6;
-  transition: all 0.3s ease;
-}
-
-.ngn-interactive-table td:first-child {
-  border-radius: 8px 0 0 8px;
-  border-left: 3px solid var(--navy);
-  font-weight: 500;
-}
-
-.ngn-interactive-table td:last-child {
-  border-radius: 0 8px 8px 0;
-}
-
-.ngn-interactive-table tr:hover td {
-  background: #f8f9fa;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.ngn-radio-group {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
-
-.ngn-radio-option {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 6px;
-  transition: all 0.3s ease;
-}
-
-.ngn-radio-option:hover {
-  background: rgba(0, 91, 150, 0.1);
-}
-
-.ngn-radio-option input[type="radio"] {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 18px;
-  height: 18px;
-  border: 2px solid var(--navy);
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.ngn-radio-option input[type="radio"]:checked {
-  background: var(--navy);
-}
-
-.ngn-radio-option input[type="radio"]:checked::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 6px;
-  height: 6px;
-  background: white;
-  border-radius: 50%;
-}
-
-.ngn-radio-option.correct {
-  color: #28a745;
-  font-weight: 600;
-}
-
-.ngn-radio-option.wrong {
-  color: #dc3545;
-  font-weight: 600;
-}
-
-.ngn-checkbox-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  align-items: center;
-}
-
-.ngn-checkbox-option {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 6px;
-  transition: all 0.3s ease;
-}
-
-.ngn-checkbox-option:hover {
-  background: rgba(0, 91, 150, 0.1);
-}
-
-.ngn-checkbox-option input[type="checkbox"] {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 18px;
-  height: 18px;
-  border: 2px solid var(--navy);
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.ngn-checkbox-option input[type="checkbox"]:checked {
-  background: var(--navy);
-}
-
-.ngn-checkbox-option input[type="checkbox"]:checked::after {
-  content: "✓";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.ngn-option-item {
-  padding: 15px;
-  margin: 8px 0;
-  background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
-  border: 2px solid #e9ecef;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.ngn-option-item:hover {
-  border-color: var(--navy-light);
-  transform: translateX(5px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.ngn-option-item.selected {
-  border-color: var(--navy);
-  background: linear-gradient(135deg, #e8f4fc 0%, #d4e8f7 100%);
-}
-
-.ngn-option-item.correct {
-  border-color: #28a745;
-  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-}
-
-.ngn-option-item.wrong {
-  border-color: #dc3545;
-  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
-}
-
-.ngn-drag-item {
-  padding: 12px 20px;
-  margin: 8px 0;
-  background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
-  border: 2px solid var(--navy);
-  border-radius: 8px;
-  cursor: grab;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  display: inline-block;
-}
-
-.ngn-drag-item:active {
-  cursor: grabbing;
-  transform: scale(1.02);
-}
-
-.ngn-drop-zone {
-  min-height: 60px;
-  padding: 15px;
-  border: 2px dashed var(--navy-light);
-  border-radius: 8px;
-  background: rgba(0, 91, 150, 0.05);
-  margin: 15px 0;
-  transition: all 0.3s ease;
-}
-
-.ngn-drop-zone.drag-over {
-  border-color: var(--navy);
-  background: rgba(0, 91, 150, 0.1);
-}
-
-.ngn-highlight-text {
-  padding: 2px 8px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
-}
-
-.ngn-highlight-text:hover {
-  background: rgba(0, 91, 150, 0.1);
-  border-color: var(--navy-light);
-}
-
-.ngn-highlight-text.selected {
-  background: rgba(0, 91, 150, 0.2);
-  border-color: var(--navy);
-}
-
-.ngn-highlight-text.correct {
-  background: rgba(40, 167, 69, 0.2);
-  border-color: #28a745;
-}
-
-.ngn-highlight-text.wrong {
-  background: rgba(220, 53, 69, 0.2);
-  border-color: #dc3545;
-}
-
-.ngn-result-feedback {
-  padding: 12px 20px;
-  margin: 10px 0;
-  border-radius: 8px;
-  font-weight: 500;
-  text-align: center;
-  animation: slideIn 0.3s ease;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.ngn-result-feedback.correct {
-  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
-.ngn-result-feedback.wrong {
-  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
-.ngn-submit-btn {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
-  color: white;
-  border: none;
-  padding: 12px 30px;
-  font-size: 14px;
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin: 15px 0;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-}
-
-.ngn-submit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-}
-
-.ngn-submit-btn:active {
-  transform: translateY(0);
-}
-
-.ngn-submit-btn:disabled {
-  background: #6c757d;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* ---------- SPEAKER ICON FOR EXPLANATION ---------- */
-.speaker-icon {
-  cursor: pointer;
-  margin-left: 8px;
-  font-size: 1.2em;
-  display: inline-block;
-  vertical-align: middle;
-  transition: opacity 0.2s;
-}
-.speaker-icon:hover {
-  opacity: 0.7;
-}
-
-
-/* ===== Mobile responsiveness patch ===== */
-html{
-  -webkit-text-size-adjust:100%;
-  text-size-adjust:100%;
-}
-
-img, iframe, video, canvas, svg {
-  max-width: 100%;
-}
-
-@media (max-width: 900px) {
-  body{
-    overflow:auto;
-    min-height:100dvh;
-  }
-
-  .topbar{
-    height:auto;
-    min-height:68px;
-    padding:10px 12px;
-    grid-template-columns:1fr;
-    gap:10px;
-    align-items:start;
-  }
-
-  .top-left,
-  .top-center,
-  .top-right{
-    justify-self:stretch;
-    min-width:0;
-  }
-
-  .top-left{
-    gap:10px;
-    align-items:flex-start;
-    white-space:normal;
-  }
-
-  .top-left-title{
-    white-space:normal;
-    line-height:1.15;
-    font-size:18px;
-  }
-
-  .top-center{
-    text-align:left;
-  }
-
-  .top-center .meta-line,
-  .top-center .qid-line{
-    font-size:14px;
-  }
-
-  .top-right{
-    width:100%;
-    display:grid;
-    grid-template-columns:repeat(3, minmax(0, 1fr));
-    gap:8px;
-    align-items:stretch;
-  }
-
-  .status-row{
-    min-width:0;
-    justify-content:space-between;
-    padding:8px 10px;
-    line-height:1.15;
-    border-radius:10px;
-    background:rgba(255,255,255,0.12);
-  }
-
-  body.night-mode .status-row{
-    background:rgba(255,255,255,0.05);
-  }
-
-  .status-label{
-    min-width:0;
-    text-align:left;
-    font-size:13px;
-  }
-
-  .status-value{
-    font-size:13px;
-  }
-
-  .calc-strip{
-    height:auto;
-    min-height:40px;
-    padding:8px 10px;
-    gap:8px;
-    flex-direction:column;
-    align-items:stretch;
-  }
-
-  .calc-left,
-  .calc-right{
-    width:100%;
-    display:grid;
-    gap:8px;
-  }
-
-  .calc-left{
-    grid-template-columns:repeat(3, minmax(0, 1fr));
-  }
-
-  .calc-right{
-    grid-template-columns:repeat(2, minmax(0, 1fr));
-  }
-
-  #markReviewBtn{
-    grid-column:1 / -1;
-  }
-
-  .strip-btn{
-    min-width:0;
-    min-height:44px;
-    justify-content:center;
-    padding:10px 8px;
-    border-radius:10px;
-    background:rgba(255,255,255,0.12);
-    white-space:normal;
-    line-height:1.2;
-    text-align:center;
-    font-size:15px;
-  }
-
-  .action-icon-btn{
-    padding:10px 8px;
-  }
-
-  .strip-separator{
-    display:none;
-  }
-
-  .main{
-    height:auto !important;
-    min-height:calc(100dvh - 250px);
-    grid-template-columns:1fr !important;
-    grid-template-rows:auto;
-  }
-
-  .main.show-result{
-    grid-template-columns:1fr !important;
-    grid-template-rows:auto 1px auto;
-  }
-
-  .left,
-  #rightPanel{
-    padding:16px 14px 140px;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-  }
-
-  .main.show-result .divider{
-    display:block;
-    width:100%;
-    height:1px;
-  }
-
-  .divider{
-    width:100%;
-    height:1px;
-  }
-
-  #rightPanel{
-    width:100%;
-  }
-
-  #question > div[style*="height:620px"]{
-    height:min(62vh, 420px) !important;
-    max-width:100% !important;
-  }
-
-  #questionResultBox{
-    padding:10px;
-  }
-
-  .result-flex{
-    grid-template-columns:1fr !important;
-    gap:8px !important;
-  }
-
-  .result-item{
-    padding:10px 8px !important;
-  }
-
-  .option{
-    padding:12px 6px 12px 44px;
-    line-height:1.45;
-  }
-
-  .option::before{
-    left:12px;
-    width:22px;
-    height:22px;
-  }
-
-  .option.correct::after,
-  .option.wrong::after{
-    left:-2px;
-  }
-
-  .check-btn{
-    margin-top:16px;
-  }
-
-  .check-btn button{
-    width:100%;
-    max-width:100%;
-    margin-left:0;
-    min-height:46px;
-    border-radius:10px;
-  }
-
-  .nav-tabs{
-    flex-wrap:nowrap;
-    overflow-x:auto;
-    overflow-y:hidden;
-    -webkit-overflow-scrolling:touch;
-    scrollbar-width:thin;
-  }
-
-  .nav-link{
-    flex:0 0 auto;
-    white-space:nowrap;
-  }
-
-  .tab-content{
-    padding:12px;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-  }
-
-  table,
-  .ngn-interactive-table{
-    display:block;
-    width:100%;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-  }
-
-  th, td{
-    white-space:normal;
-    word-break:break-word;
-  }
-
-  .ngn-interactive-table th,
-  .ngn-interactive-table td{
-    min-width:120px;
-  }
-
-  .ngn-slider-container,
-  .ngn-dropdown,
-  .ngn-element-container{
-    display:block;
-    width:100%;
-    max-width:100%;
-    margin-right:0;
-  }
-
-  .ngn-slider{
-    width:100%;
-    max-width:100%;
-  }
-
-  .ngn-slider-value{
-    display:block;
-    margin:10px 0 0;
-    min-width:0;
-  }
-
-  .ngn-dropdown-select{
-    width:100%;
-    min-width:0;
-  }
-
-  .ngn-radio-group,
-  .ngn-checkbox-group{
-    flex-direction:column;
-    align-items:stretch;
-    gap:10px;
-  }
-
-  .ngn-radio-option,
-  .ngn-checkbox-option,
-  .ngn-option-item{
-    width:100%;
-  }
-
-  .ngn-option-item{
-    align-items:flex-start;
-  }
-
-  .ngn-submit-btn{
-    width:100%;
-  }
-
-  #aiModal{
-    top:auto;
-    bottom:0;
-    left:0;
-    right:0;
-    width:100vw;
-    height:min(82dvh, 700px);
-    border-radius:16px 16px 0 0;
-    transform:translateY(100%);
-    transition:transform 0.35s ease;
-  }
-
-  #aiModal.active{
-    right:0;
-    transform:translateY(0);
-  }
-
-  .ai-header{
-    border-radius:16px 16px 0 0;
-  }
-
-  .bottombar{
-    height:auto;
-    min-height:56px;
-    padding:8px 10px calc(10px + env(safe-area-inset-bottom));
-    flex-direction:column;
-    align-items:stretch;
-    gap:8px;
-  }
-
-  .bottom-left,
-  .bottom-right{
-    width:100%;
-    display:grid;
-    gap:8px;
-  }
-
-  .bottom-left{
-    grid-template-columns:repeat(2, minmax(0, 1fr));
-  }
-
-  .bottom-right{
-    grid-template-columns:repeat(3, minmax(0, 1fr));
-  }
-
-  .footer-separator{
-    display:none;
-  }
-
-  .bottombar button{
-    min-height:44px;
-    padding:10px 8px;
-    border-radius:10px;
-    background:rgba(255,255,255,0.12);
-    white-space:normal;
-    line-height:1.2;
-  }
-
-  body.night-mode .bottombar button{
-    background:#1f1f1f;
-    border:1px solid #2a2a2a;
-  }
-
-  #calculator{
-    top:96px;
-    left:50%;
-    width:min(92vw, 244px);
-  }
-
-  #fullscreen-overlay{
-    padding:24px;
-    font-size:20px !important;
-    text-align:center;
-  }
-}
-
-@media (max-width: 560px) {
-  .top-right{
-    grid-template-columns:1fr;
-  }
-
-  .calc-left,
-  .calc-right{
-    grid-template-columns:1fr;
-  }
-
-  .bottom-left,
-  .bottom-right{
-    grid-template-columns:1fr;
-  }
-
-  .top-left-title{
-    font-size:16px;
-  }
-
-  .top-center .meta-line,
-  .top-center .qid-line,
-  #questionCounter,
-  .status-row,
-  .strip-btn,
-  .bottombar button{
-    font-size:14px;
-  }
-
-  .left,
-  #rightPanel{
-    padding-left:12px;
-    padding-right:12px;
-  }
-
-  .blur-box h3{
-    font-size:20px !important;
-  }
-
-  .blur-box p{
-    font-size:17px !important;
-  }
-}
-
-
-/* --- Compact top layout / transparent blue controls --- */
-.topbar{
-  min-height: 64px;
-  height: auto;
-  padding: 8px 12px;
-  grid-template-columns: minmax(0,1fr) auto;
-  gap: 8px 12px;
-  align-items: start;
-}
-.top-left{
-  font-size: 13px;
-  line-height: 1.15;
-  white-space: normal;
-  gap: 6px;
-}
-.top-left-title{
-  gap: 2px;
-  font-size: 13px;
-  line-height: 1.15;
-}
-.top-center{
-  display:none;
-}
-.top-right{
-  gap: 3px;
-  align-items:flex-end;
-}
-.status-row{
-  font-size: 12px;
-  line-height: 1;
-  padding: 0;
-  gap: 5px;
-}
-.status-label{
-  min-width: auto;
-}
-.status-value{
-  font-size: 12px;
-}
-.mobile-top-actions{
-  grid-column: 1 / -1;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-  padding-top: 2px;
-}
-.top-action-btn{
-  flex:1 1 0;
-  min-height: 38px;
-  padding: 9px 10px;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.38);
-  background: rgba(255,255,255,0.10);
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  transition: background-color .2s ease, border-color .2s ease, transform .15s ease;
-}
-.top-action-btn:hover{
-  background: rgba(255,255,255,0.18);
-  border-color: rgba(255,255,255,0.55);
-}
-.top-action-btn:active{
-  transform: translateY(1px);
-}
-.primary-check-btn{
-  background: rgba(160,191,228,0.28);
-  border-color: rgba(255,255,255,0.52);
-}
-body.night-mode .top-action-btn{
-  background: rgba(124,175,232,0.12);
-  border-color: rgba(255,255,255,0.16);
-}
-body.night-mode .top-action-btn:hover{
-  background: rgba(124,175,232,0.18);
-}
-body.night-mode .primary-check-btn{
-  background: rgba(124,175,232,0.22);
-}
-
-.calc-strip,
-.bottombar{
-  display:none !important;
-}
-
-.main{
-  height: calc(100vh - 120px);
-}
-.left, #rightPanel{
-  padding-top: 18px;
-  padding-bottom: 28px;
-}
-
-@media (max-width: 900px){
-  .topbar{
-    padding: 8px 10px;
-    gap: 6px 10px;
-  }
-  .top-left-title{
-    font-size: 12px;
-  }
-  .status-row{
-    font-size: 11px;
-  }
-  .status-value{
-    font-size: 11px;
-  }
-  .mobile-top-actions{
-    gap: 6px;
-  }
-  .top-action-btn{
-    min-height: 36px;
-    padding: 8px 8px;
-    font-size: 13px;
-    border-radius: 9px;
-  }
-  .main{
-    height: calc(100vh - 116px);
-  }
-}
-
-@media (max-width: 640px){
-  .topbar{
-    grid-template-columns: 1fr;
-    gap: 6px;
-  }
-  .top-right{
-    display:grid;
-    grid-template-columns: repeat(3, minmax(0,1fr));
-    gap: 6px;
-    justify-self: stretch;
-    width:100%;
-  }
-  .status-row{
-    justify-content:center;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.18);
-    border-radius: 8px;
-    padding: 6px 4px;
-  }
-  .status-label{
-    display:block;
-    text-align:center;
-    font-size: 10px;
-  }
-  .status-value{
-    font-size: 11px;
-  }
-  .mobile-top-actions{
-    padding-top: 0;
-  }
-  .top-action-btn{
-    min-height: 36px;
-    font-size: 12px;
-    padding: 8px 6px;
-  }
-  .main{
-    height: calc(100vh - 164px);
-  }
-}
-
-@media (max-width: 420px){
-  .top-left-title{
-    font-size: 11px;
-  }
-  .status-row{
-    flex-direction: column;
-    gap: 3px;
-  }
-  .status-label{
-    font-size: 9px;
-  }
-  .status-value{
-    font-size: 10px;
-  }
-  .top-action-btn{
-    font-size: 11px;
-  }
-  .main{
-    height: calc(100vh - 178px);
-  }
-}
-
-</style>
-</head>
-
-<body>
-
-<div class="topbar">
-  <div class="top-left">
-    <div class="top-left-title">PBX-0008</br>NCLEX-RN</div>
-    <span id="fileName" class="top-left-badge" onclick="triggerFileLoad()"></span>
-    <div id="typewriter" class="cursor-blink"></div>
-  </div>
-  <div class="top-center">
-    <div class="meta-line" id="testMetaLine" onclick="triggerFileLoad()">CLICK HERE</div>
-    <div class="qid-line" id="qidDisplay">QID:</div>
-  </div>
-  <div class="top-right">
-    <div class="status-row" onclick="toggleTime()">
-      <span class="status-label">Time ⏱</span>
-      <span class="status-icon">◷</span>
-      <span class="status-value" id="timeBox">00:00</span>
-    </div>
-    <div class="status-row" onclick="toggleQuestionNumbers()">
-      <span class="status-label">Question 彡</span>
-      <span class="status-icon"></span>
-      <span class="status-value" id="questionCounter">0 of 0</span>
-    </div>
-    <div class="status-row" onclick="toggleScore()">
-      <span class="status-label">Percentage ⚖</span>
-      <span class="status-icon">%</span>
-      <span class="status-value" id="scoreBox">0%</span>
-    </div>
-  </div>
-
-  <div class="mobile-top-actions" aria-label="Question controls">
-    <button type="button" class="top-action-btn" onclick="prevQ()">⬅ Previous</button>
-    <button type="button" class="top-action-btn primary-check-btn" onclick="check()">✓ Check</button>
-    <button type="button" class="top-action-btn" onclick="nextQ()">Next ➡</button>
-  </div>
-
-</div>
-
-<div id="fullscreen-overlay" onclick="this.style.display='none'; toggleFullscreen()" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:99999; cursor:pointer; color:white; font-size:24px; display:none; justify-content:center; align-items:center;">Click anywhere to enter fullscreen</div>
-
-<div id="aiModal">
-  <div class="ai-header">
-    <span>✨<span class="pbx-glare"></span> Assistant</span>
-    <span onclick="closeAI()" style="cursor:pointer">✖</span>
-  </div>
-  <div class="ai-body">
-    <div id="aiLoader" class="ai-loader">
-      <div class="spinner"></div>
-      <p>Consulting <span class="pbx-glare"></span> AI...</p>
-    </div>
-    <iframe id="aiFrame" src=""></iframe>
-  </div>
-</div>
-
-<div class="main">
-  <div class="left">
-    <div id="caseStudyContainer"></div>
-
-    <div class="qtext" id="question"><div style="max-width:1500px;min-height:280px;height:clamp(240px,38vh,420px);border-radius:7px;overflow:hidden;position:relative;font-family:Arial,sans-serif;color:white;">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>NCLEX-RN Mobile Exam UI</title>
   <style>
-    .bg-slide {
-      position: absolute;
-      inset: 0;
-      background-size: cover;
-      background-position: center;
-      animation: fadeShow 24s infinite;
-      transform: scale(1.06);
+    :root {
+      --bg: #f4f7fb;
+      --surface: #ffffff;
+      --surface-soft: #f8fbff;
+      --surface-muted: #eef4fa;
+      --border: #d8e2ee;
+      --border-strong: #c3d2e4;
+      --text: #132033;
+      --text-muted: #5f6f85;
+      --text-soft: #7b8ba1;
+      --primary: #1f5fae;
+      --primary-strong: #194e91;
+      --primary-soft: #eaf2fd;
+      --success: #15803d;
+      --success-soft: #e8f7ee;
+      --danger: #c63b36;
+      --danger-soft: #fdeeee;
+      --warning: #a16207;
+      --warning-soft: #fff7df;
+      --shadow: 0 10px 30px rgba(12, 34, 64, 0.08);
+      --radius: 18px;
+      --radius-sm: 12px;
+      --header-height: 126px;
+      --bottom-height: 76px;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
 
-    .bg1 {
-      background-image: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80');
-      animation-delay: 0s;
+    body.dark {
+      --bg: #0e1623;
+      --surface: #141f2d;
+      --surface-soft: #172436;
+      --surface-muted: #1d2b40;
+      --border: #253650;
+      --border-strong: #314766;
+      --text: #ebf1f8;
+      --text-muted: #b4c1d2;
+      --text-soft: #8fa1b8;
+      --primary: #77aef8;
+      --primary-strong: #5897ee;
+      --primary-soft: rgba(119, 174, 248, 0.12);
+      --success: #5bd08a;
+      --success-soft: rgba(91, 208, 138, 0.12);
+      --danger: #f27b7b;
+      --danger-soft: rgba(242, 123, 123, 0.14);
+      --warning: #f0b556;
+      --warning-soft: rgba(240, 181, 86, 0.14);
+      --shadow: 0 14px 34px rgba(0, 0, 0, 0.32);
     }
 
-    .bg2 {
-      background-image: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80');
-      animation-delay: 8s;
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
-    .bg3 {
-      background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80');
-      animation-delay: 16s;
+    button, input, select, textarea {
+      font: inherit;
     }
 
-    @keyframes fadeShow {
-      0%   { opacity: 0; transform: scale(1.08); }
-      8%   { opacity: 1; transform: scale(1.03); }
-      30%  { opacity: 1; transform: scale(1); }
-      38%  { opacity: 0; transform: scale(1.05); }
-      100% { opacity: 0; transform: scale(1.08); }
+    button {
+      cursor: pointer;
+      border: 0;
+      background: none;
+      color: inherit;
     }
 
-    .dark-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.28), rgba(0,0,0,0.58));
+    img { max-width: 100%; height: auto; display: block; }
+    table { width: 100%; border-collapse: collapse; }
+    a { color: var(--primary); }
+
+    .hidden { display: none !important; }
+
+    .app-shell {
+      min-height: 100%;
+      padding-bottom: calc(var(--bottom-height) + var(--safe-bottom) + 10px);
     }
 
-    .text-wrap {
-      position: relative;
-      z-index: 2;
-      height: 100%;
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      padding: 12px 12px 10px;
+      background: linear-gradient(180deg, rgba(244,247,251,0.98), rgba(244,247,251,0.94));
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(31,95,174,0.08);
+    }
+
+    body.dark .app-header {
+      background: linear-gradient(180deg, rgba(14,22,35,0.96), rgba(14,22,35,0.92));
+      border-bottom-color: rgba(119,174,248,0.08);
+    }
+
+    .header-panel {
+      max-width: 1480px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .brand-row {
       display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .brand-block {
+      min-width: 0;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: clamp(18px, 3.6vw, 26px);
+      line-height: 1.15;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .brand-subtitle {
+      margin-top: 4px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .chip-btn,
+    .metric,
+    .status-pill,
+    .outline-btn,
+    .primary-btn,
+    .secondary-btn,
+    .ghost-btn {
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      color: var(--text);
+    }
+
+    .chip-btn {
+      padding: 10px 12px;
+      min-height: 42px;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 30px;
-      text-align: center;
-    }
-
-    .blur-box {
-      max-width: 980px;
-      padding: 34px 40px;
-      border-radius: 22px;
-      background: rgba(255,255,255,0.12);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255,255,255,0.22);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.28);
-    }
-
-    .blur-box h3 {
-      margin: 0 0 18px 0;
-      font-size: 34px;
-      line-height: 1.45;
+      gap: 8px;
       font-weight: 700;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+      font-size: 13px;
+      white-space: nowrap;
+      transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
     }
 
-    .blur-box p {
+    .chip-btn:hover,
+    .outline-btn:hover,
+    .secondary-btn:hover,
+    .ghost-btn:hover,
+    .primary-btn:hover {
+      transform: translateY(-1px);
+      border-color: var(--border-strong);
+    }
+
+    .chip-btn.primary,
+    .primary-btn {
+      background: var(--primary);
+      color: white;
+      border-color: transparent;
+    }
+
+    .chip-btn.primary:hover,
+    .primary-btn:hover {
+      background: var(--primary-strong);
+    }
+
+    .header-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .metric {
+      padding: 10px 12px;
+      min-height: 58px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-soft);
+      font-weight: 700;
+    }
+
+    .metric-value {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .header-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .status-pill {
+      padding: 8px 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 700;
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .status-pill strong {
+      color: var(--text);
+      font-size: 12px;
+    }
+
+    .workspace {
+      max-width: 1480px;
+      margin: 14px auto 0;
+      padding: 0 12px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .exam-pane,
+    .result-pane {
+      min-width: 0;
+    }
+
+    .panel-card,
+    .empty-card,
+    .question-card,
+    .summary-card,
+    .case-card,
+    .explanation-card,
+    .modal-sheet,
+    .calc-sheet,
+    .nav-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .empty-card {
+      padding: 22px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .empty-top {
+      display: grid;
+      gap: 8px;
+    }
+
+    .empty-top h2 {
       margin: 0;
-      font-size: 30px;
-      line-height: 1.6;
-      font-weight: 500;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+      font-size: clamp(22px, 4vw, 34px);
+      line-height: 1.1;
     }
 
-    @media (max-width: 768px) {
-      .blur-box {
-        padding: 22px 18px;
-        border-radius: 16px;
+    .empty-top p {
+      margin: 0;
+      color: var(--text-muted);
+      max-width: 64ch;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .feature-item {
+      padding: 14px;
+      border-radius: 16px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      display: grid;
+      gap: 4px;
+    }
+
+    .feature-item strong {
+      font-size: 14px;
+    }
+
+    .feature-item span {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .upload-zone {
+      border: 1.5px dashed var(--border-strong);
+      border-radius: 20px;
+      padding: 18px;
+      background: linear-gradient(180deg, var(--surface-soft), transparent);
+      display: grid;
+      gap: 12px;
+    }
+
+    .upload-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .outline-btn,
+    .primary-btn,
+    .secondary-btn,
+    .ghost-btn {
+      min-height: 44px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .secondary-btn {
+      background: var(--surface-soft);
+    }
+
+    .ghost-btn {
+      background: transparent;
+    }
+
+    .app-file-input { display: none; }
+
+    .exam-content {
+      display: grid;
+      gap: 14px;
+    }
+
+    .case-card,
+    .question-card,
+    .explanation-card {
+      padding: 16px;
+    }
+
+    .case-card {
+      display: grid;
+      gap: 12px;
+    }
+
+    .case-header,
+    .question-head,
+    .explanation-head,
+    .summary-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .section-subtitle {
+      margin: 3px 0 0;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .question-head {
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 14px;
+    }
+
+    .question-head h2 {
+      margin: 3px 0 0;
+      font-size: clamp(18px, 3.4vw, 26px);
+      line-height: 1.15;
+    }
+
+    .qmeta-stack {
+      display: grid;
+      gap: 4px;
+    }
+
+    .qmeta-badges,
+    .toolbar-right,
+    .toolbar-left,
+    .summary-grid,
+    .meta-grid,
+    .inline-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .tag {
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 800;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    .tag.primary { background: var(--primary-soft); color: var(--primary); border-color: transparent; }
+    .tag.success { background: var(--success-soft); color: var(--success); border-color: transparent; }
+    .tag.warning { background: var(--warning-soft); color: var(--warning); border-color: transparent; }
+    .tag.danger { background: var(--danger-soft); color: var(--danger); border-color: transparent; }
+
+    .question-body {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--text);
+      word-wrap: break-word;
+    }
+
+    .question-body table,
+    .case-body table,
+    .options-list table,
+    .explanation-body table {
+      margin: 14px 0;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+      max-width: 100%;
+    }
+
+    .question-body th,
+    .question-body td,
+    .case-body th,
+    .case-body td,
+    .options-list th,
+    .options-list td,
+    .explanation-body th,
+    .explanation-body td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    .question-body th,
+    .case-body th,
+    .options-list th,
+    .explanation-body th {
+      background: var(--surface-soft);
+      font-weight: 800;
+    }
+
+    .options-list {
+      margin-top: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .option-card {
+      position: relative;
+      width: 100%;
+      text-align: left;
+      padding: 14px 16px 14px 56px;
+      border-radius: 18px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      min-height: 64px;
+      transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      color: var(--text);
+      box-shadow: 0 4px 12px rgba(18, 33, 51, 0.03);
+    }
+
+    .option-card:hover {
+      transform: translateY(-1px);
+      border-color: var(--primary);
+      box-shadow: 0 10px 20px rgba(24, 52, 86, 0.06);
+    }
+
+    .option-card:disabled {
+      cursor: default;
+    }
+
+    .option-card .option-marker {
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border-strong);
+      background: var(--surface-soft);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .option-card.multi .option-marker {
+      border-radius: 10px;
+    }
+
+    .option-card.single .option-marker {
+      border-radius: 999px;
+    }
+
+    .option-card.selected {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    .option-card.selected .option-marker {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .option-card.correct {
+      border-color: rgba(21, 128, 61, 0.35);
+      background: var(--success-soft);
+    }
+
+    .option-card.wrong {
+      border-color: rgba(198, 59, 54, 0.32);
+      background: var(--danger-soft);
+    }
+
+    .option-card.correct::after,
+    .option-card.wrong::after {
+      position: absolute;
+      right: 14px;
+      top: 14px;
+      font-weight: 900;
+      font-size: 18px;
+    }
+
+    .option-card.correct::after { content: "✓"; color: var(--success); }
+    .option-card.wrong::after { content: "✕"; color: var(--danger); }
+
+    .option-label {
+      display: block;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .option-percent {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .summary-card {
+      padding: 14px;
+      margin-top: 14px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .summary-metric {
+      padding: 12px;
+      border-radius: 14px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      display: grid;
+      gap: 4px;
+    }
+
+    .summary-metric small {
+      color: var(--text-soft);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      font-size: 10px;
+    }
+
+    .summary-metric strong {
+      font-size: 17px;
+      line-height: 1.1;
+    }
+
+    .summary-card.correct-state { border-color: rgba(21, 128, 61, 0.35); }
+    .summary-card.partial-state { border-color: rgba(161, 98, 7, 0.35); }
+    .summary-card.incorrect-state { border-color: rgba(198, 59, 54, 0.32); }
+
+    .explanation-card {
+      display: grid;
+      gap: 14px;
+      position: relative;
+    }
+
+    .explanation-body {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.7;
+      word-wrap: break-word;
+    }
+
+    .explanation-placeholder {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .meta-card {
+      padding: 12px;
+      border-radius: 14px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      display: grid;
+      gap: 4px;
+    }
+
+    .meta-card small {
+      color: var(--text-soft);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 10px;
+    }
+
+    .meta-card strong {
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .blue-search {
+      color: var(--primary);
+      font-weight: 700;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .toolbar-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .toolbar-left,
+    .toolbar-right {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .bottom-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 45;
+      padding: 10px 12px calc(10px + var(--safe-bottom));
+      background: linear-gradient(180deg, rgba(244,247,251,0), rgba(244,247,251,0.88) 26%, rgba(244,247,251,0.97));
+      backdrop-filter: blur(18px);
+    }
+
+    body.dark .bottom-bar {
+      background: linear-gradient(180deg, rgba(14,22,35,0), rgba(14,22,35,0.9) 26%, rgba(14,22,35,0.98));
+    }
+
+    .bottom-bar-panel {
+      max-width: 1480px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 1fr 1.3fr 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .bottom-cluster {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .bottom-cluster.end {
+      justify-content: flex-end;
+    }
+
+    .bottom-btn {
+      min-height: 50px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      font-weight: 800;
+      font-size: 14px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .bottom-btn.primary {
+      background: var(--primary);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .bottom-btn.primary:hover {
+      background: var(--primary-strong);
+    }
+
+    .bottom-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .bottom-check-slot {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .bottom-check-slot .bottom-btn {
+      max-width: 360px;
+    }
+
+    .modal-backdrop,
+    .pause-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background: rgba(10, 19, 31, 0.56);
+      backdrop-filter: blur(12px);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 12px;
+    }
+
+    .modal-backdrop.active,
+    .pause-overlay.active {
+      display: flex;
+    }
+
+    .modal-sheet,
+    .calc-sheet {
+      width: min(100%, 680px);
+      max-height: min(82vh, 860px);
+      overflow: auto;
+      padding: 16px;
+      display: grid;
+      gap: 14px;
+      border-radius: 24px;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-head h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .close-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      font-weight: 800;
+    }
+
+    .navigator-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
+      gap: 10px;
+    }
+
+    .nav-card {
+      min-height: 60px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      position: relative;
+      transition: transform 0.15s ease, border-color 0.2s ease;
+    }
+
+    .nav-card:hover {
+      transform: translateY(-1px);
+      border-color: var(--primary);
+    }
+
+    .nav-card.current {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    .nav-card.submitted {
+      box-shadow: inset 0 0 0 2px rgba(21, 128, 61, 0.22);
+    }
+
+    .nav-card.marked::after {
+      content: "⚑";
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      font-size: 11px;
+      color: var(--warning);
+    }
+
+    .nav-legend {
+      display: flex;
+      gap: 8px 14px;
+      flex-wrap: wrap;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+    }
+
+    .legend-dot.current { background: var(--primary-soft); border-color: var(--primary); }
+    .legend-dot.submitted { background: var(--success-soft); border-color: var(--success); }
+    .legend-dot.marked { background: var(--warning-soft); border-color: var(--warning); }
+
+    .calc-display {
+      min-height: 72px;
+      padding: 18px;
+      border-radius: 18px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      font-size: clamp(28px, 8vw, 42px);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      overflow: hidden;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .calc-key {
+      min-height: 58px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      font-weight: 800;
+      font-size: 20px;
+      display: grid;
+      place-items: center;
+    }
+
+    .calc-key.op {
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    .calc-key.equals {
+      background: var(--primary);
+      color: white;
+      border-color: transparent;
+      grid-column: span 2;
+    }
+
+    .pause-card {
+      width: min(100%, 420px);
+      padding: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      display: grid;
+      gap: 12px;
+    }
+
+    .pause-card h3 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .pause-card p {
+      margin: 0;
+      color: var(--text-muted);
+    }
+
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-left: 0;
+      list-style: none;
+      margin: 0;
+    }
+
+    .nav-item { margin: 0; }
+
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .nav-link.active {
+      background: var(--primary-soft);
+      color: var(--primary);
+      border-color: transparent;
+    }
+
+    .tab-content {
+      padding-top: 12px;
+    }
+
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    .ngn-question-container,
+    .ngn-table-container,
+    .ngn-highlight-container,
+    .ngn-dragdrop-container,
+    .ngn-comprehensive-container {
+      display: grid;
+      gap: 14px;
+    }
+
+    .ngn-element-container {
+      padding: 14px;
+      border-radius: 16px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      display: grid;
+      gap: 10px;
+    }
+
+    .ngn-element-label {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .ngn-dropdown-select,
+    .ngn-select {
+      width: 100%;
+      min-height: 46px;
+      border-radius: 14px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
+      padding: 10px 12px;
+      color: var(--text);
+    }
+
+    .ngn-dropdown-select.correct { border-color: var(--success); background: var(--success-soft); }
+    .ngn-dropdown-select.wrong { border-color: var(--danger); background: var(--danger-soft); }
+
+    .ngn-interactive-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .ngn-interactive-table th,
+    .ngn-interactive-table td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      background: var(--surface);
+      vertical-align: top;
+    }
+
+    .ngn-interactive-table th {
+      background: var(--surface-soft);
+      font-weight: 800;
+    }
+
+    .ngn-radio-group,
+    .ngn-checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 150px;
+    }
+
+    .ngn-radio-option,
+    .ngn-checkbox-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .ngn-radio-option.selected,
+    .ngn-checkbox-option.selected {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    .ngn-radio-option.correct,
+    .ngn-checkbox-option.correct {
+      border-color: var(--success);
+      background: var(--success-soft);
+    }
+
+    .ngn-radio-option.wrong,
+    .ngn-checkbox-option.wrong {
+      border-color: var(--danger);
+      background: var(--danger-soft);
+    }
+
+    .ngn-highlight-text {
+      padding: 2px 6px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .ngn-highlight-text.selected { background: var(--primary-soft); border-color: var(--primary); }
+    .ngn-highlight-text.correct { background: var(--success-soft); border-color: var(--success); }
+    .ngn-highlight-text.wrong { background: var(--danger-soft); border-color: var(--danger); }
+
+    .ngn-dragdrop-container > div:first-child {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .ngn-drag-item {
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface-soft);
+      font-weight: 700;
+      cursor: grab;
+    }
+
+    .ngn-drop-zone {
+      min-height: 84px;
+      border-radius: 18px;
+      border: 1.5px dashed var(--border-strong);
+      background: linear-gradient(180deg, var(--surface-soft), transparent);
+      padding: 14px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .ngn-drop-zone.drag-over {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    .ngn-submit-btn {
+      min-height: 46px;
+      padding: 10px 16px;
+      border-radius: 14px;
+      background: var(--primary);
+      color: white;
+      font-weight: 800;
+      justify-self: start;
+    }
+
+    .ngn-result-feedback {
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-weight: 700;
+      border: 1px solid var(--border);
+    }
+
+    .ngn-result-feedback.correct {
+      background: var(--success-soft);
+      color: var(--success);
+      border-color: rgba(21,128,61,0.22);
+    }
+
+    .ngn-result-feedback.wrong {
+      background: var(--danger-soft);
+      color: var(--danger);
+      border-color: rgba(198,59,54,0.22);
+    }
+
+    .utility-note {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    @media (min-width: 1100px) {
+      .workspace {
+        grid-template-columns: minmax(0, 1.1fr) minmax(360px, 0.8fr);
+        align-items: start;
       }
-      .blur-box h3 {
-        font-size: 22px;
+
+      .result-pane {
+        position: sticky;
+        top: 154px;
       }
-      .blur-box p {
-        font-size: 20px;
+
+      .explanation-card {
+        max-height: calc(100vh - 200px);
+        overflow: auto;
+      }
+    }
+
+    @media (max-width: 1099px) {
+      .header-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .bottom-bar-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .bottom-cluster.end,
+      .bottom-cluster {
+        justify-content: stretch;
+      }
+
+      .bottom-cluster .bottom-btn,
+      .bottom-check-slot .bottom-btn {
+        max-width: none;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .app-header {
+        padding: 10px 10px 8px;
+      }
+
+      .header-panel,
+      .question-card,
+      .case-card,
+      .explanation-card,
+      .empty-card,
+      .modal-sheet,
+      .calc-sheet {
+        border-radius: 18px;
+      }
+
+      .brand-row {
+        flex-direction: column;
+      }
+
+      .header-actions,
+      .toolbar-left,
+      .toolbar-right,
+      .toolbar-row,
+      .upload-actions {
+        width: 100%;
+        justify-content: stretch;
+      }
+
+      .header-actions .chip-btn,
+      .toolbar-left .chip-btn,
+      .toolbar-right .chip-btn {
+        flex: 1 1 calc(50% - 8px);
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .question-card,
+      .case-card,
+      .explanation-card {
+        padding: 14px;
+      }
+
+      .question-body {
+        font-size: 15px;
+      }
+
+      .option-card {
+        padding: 14px 14px 14px 52px;
+      }
+
+      .summary-grid,
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .navigator-grid {
+        grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+      }
+
+      .calc-grid {
+        gap: 8px;
+      }
+
+      .calc-key {
+        min-height: 54px;
       }
     }
   </style>
+</head>
+<body>
+  <div class="app-shell">
+    <input id="fileLoader" class="app-file-input" type="file" accept=".json,.txt" />
 
-  <!-- Changing Background Images -->
-  <div class="bg-slide bg1"></div>
-  <div class="bg-slide bg2"></div>
-  <div class="bg-slide bg3"></div>
-
-  <!-- Overlay -->
-  <div class="dark-overlay"></div>
-
-  <!-- Text in Blurred Box -->
-  <div class="text-wrap">
-    <div class="blur-box">
-      <h3>
-        The most difficult thing is the decision to act;<br>
-        the rest is merely tenacity.
-      </h3>
-      <p>
-        ਸਭ ਤੋਂ ਔਖਾ ਕੋਈ ਵੀ ਕੰਮ ਕਰਨ ਦਾ ਫੈਸਲਾ ਲੈਣਾ ਹੁੰਦਾ ਹੈ;<br>
-        ਬਾਕੀ ਸਭ ਸਿਰਫ਼ ਡਟੇ ਰਹਿਣ ਦੀ ਗੱਲ ਹੁੰਦੀ ਹੈ…
-      </p>
-    </div>
-  </div>
-
-</div></div>
-    <div id="options"></div>
-<div id="questionResultBox">
-        <div class="result-flex">
-            <div class="result-item"><b id="ind-score">0 / 0</b>♛ Scored/Max</div>
-            <div class="result-item"><b id="ind-scoring-rule">0 / 1</b>🛡 Scoring rule</div>
-            <div class="result-item"><b id="ind-time">00 mins, 00 secs</b>ⴵ Time spent</div>
-            <div class="result-item"><b id="ind-subject">General</b>subject</div>
-            <div class="result-item"><b id="ind-topic">General</b>topic</div>
+    <header class="app-header">
+      <div class="header-panel">
+        <div class="brand-row">
+          <div class="brand-block">
+            <div class="eyebrow">Mobile-first exam interface</div>
+            <h1 class="brand-title">NCLEX-RN Readiness Assessment</h1>
+            <div class="brand-subtitle" id="testMetaLine">Load a JSON question bank to begin.</div>
+          </div>
+          <div class="header-actions">
+            <button class="chip-btn primary" type="button" onclick="triggerFileLoad()">Load JSON</button>
+            <button class="chip-btn" type="button" onclick="openNavigator()">Navigator</button>
+            <button class="chip-btn" type="button" id="markReviewBtn" onclick="toggleMarkForReview()">Review</button>
+            <button class="chip-btn" type="button" onclick="toggleNightMode()">Theme</button>
+            <button class="chip-btn" type="button" onclick="openCalc()">Calc</button>
+          </div>
         </div>
-    </div>
-  </div>
-  <div id="dividerLine" class="divider"></div>
-  <div id="rightPanel" class="right">
-    <div id="explanation">Explanation will appear here.</div>
-  </div>
-</div>
 
-<div id="calculator" aria-label="Texas Instruments TI-108 calculator">
-  <div id="calc-header" aria-hidden="true"></div>
-  <button id="calc-close" type="button" aria-label="Close calculator" onclick="closeCalc()">×</button>
-  <div class="ti-face">
-    <div class="ti-display-wrap">
-      <input type="text" id="calc-display" readonly value="0">
-    </div>
-    <div class="ti-brand-row">
-      <span class="ti-brand-small">TEXAS INSTRUMENTS</span>
-      <span class="ti-brand-big">TI-108</span>
-    </div>
-    <div class="ti-upper-lower">
-      <div class="ti-solar" aria-hidden="true">
-        <span></span><span></span><span></span><span></span><span></span>
+        <div class="header-metrics">
+          <div class="metric"><span class="metric-label">Time</span><span class="metric-value" id="timeBox">00:00</span></div>
+          <div class="metric"><span class="metric-label">Question</span><span class="metric-value" id="questionCounter">0 / 0</span></div>
+          <div class="metric"><span class="metric-label">Score</span><span class="metric-value" id="scoreBox">0%</span></div>
+          <div class="metric"><span class="metric-label">Mode</span><span class="metric-value" id="modeBox">Tutored</span></div>
+        </div>
+
+        <div class="toolbar-row">
+          <div class="toolbar-left">
+            <span class="status-pill"><span>File</span><strong id="fileName">—</strong></span>
+            <span class="status-pill"><span>QID</span><strong id="qidDisplay">—</strong></span>
+          </div>
+          <div class="toolbar-right">
+            <button class="chip-btn" type="button" onclick="suspendTest()" id="pauseBtn">Pause</button>
+            <button class="chip-btn" type="button" onclick="toggleFullscreen()">Fullscreen</button>
+            <button class="chip-btn" type="button" onclick="endTest()">Reset</button>
+          </div>
+        </div>
       </div>
-      <div class="ti-upper-spacer"></div>
-    </div>
-    <div class="calc-grid">
-      <button class="calc-btn calc-btn-red calc-btn-small" onclick="calcToggleSign()">+/-</button>
-      <button class="calc-btn calc-btn-red calc-btn-small" onclick="calcSqrt()">√</button>
-      <button class="calc-btn calc-btn-red calc-btn-small" onclick="calcPercent()">%</button>
-      <button class="calc-btn calc-btn-red calc-btn-op" onclick="calcOperator('+')">+</button>
+    </header>
 
-      <button class="calc-btn calc-btn-red calc-btn-small" onclick="calcMemoryRecallClear()">MRC</button>
-      <button class="calc-btn calc-btn-red calc-btn-small" onclick="calcMemorySubtract()">M-</button>
-      <button class="calc-btn calc-btn-red calc-btn-small" onclick="calcMemoryAdd()">M+</button>
-      <button class="calc-btn calc-btn-red calc-btn-op" onclick="calcOperator('*')">×</button>
+    <main class="workspace">
+      <section class="exam-pane">
+        <div class="empty-card" id="emptyState">
+          <div class="empty-top">
+            <div class="eyebrow">Rebuilt for tighter mobile study sessions</div>
+            <h2>Professional, space-efficient, UWorld-style exam flow.</h2>
+            <p>This version removes visual clutter, prioritizes readable question content, and shifts to a compact mobile layout that expands to split view on larger screens.</p>
+          </div>
 
-      <button class="calc-btn calc-btn-white" onclick="calcDigit('7')">7</button>
-      <button class="calc-btn calc-btn-white" onclick="calcDigit('8')">8</button>
-      <button class="calc-btn calc-btn-white" onclick="calcDigit('9')">9</button>
-      <button class="calc-btn calc-btn-red calc-btn-op" onclick="calcOperator('-')">−</button>
+          <div class="feature-grid">
+            <div class="feature-item"><strong>Cleaner question focus</strong><span>Single-column reading on phones with sticky actions and compact status chips.</span></div>
+            <div class="feature-item"><strong>Better answer review</strong><span>Explanation panel appears cleanly with score, timing, and topic metadata.</span></div>
+            <div class="feature-item"><strong>Fast navigation</strong><span>Question navigator, mark-for-review, pause, fullscreen, and calculator stay easy to reach.</span></div>
+            <div class="feature-item"><strong>NGN ready</strong><span>Dropdown, highlight, checkbox, radio, and drag-drop question scaffolding is preserved.</span></div>
+          </div>
 
-      <button class="calc-btn calc-btn-white" onclick="calcDigit('4')">4</button>
-      <button class="calc-btn calc-btn-white" onclick="calcDigit('5')">5</button>
-      <button class="calc-btn calc-btn-white" onclick="calcDigit('6')">6</button>
-      <button class="calc-btn calc-btn-red calc-btn-op" onclick="calcOperator('+')">+</button>
+          <div class="upload-zone">
+            <div>
+              <strong>Load your exam JSON</strong>
+              <div class="utility-note">Supports the same question data structure used by your existing HTML workflow.</div>
+            </div>
+            <div class="upload-actions">
+              <button class="primary-btn" type="button" onclick="triggerFileLoad()">Choose file</button>
+              <button class="outline-btn" type="button" onclick="toggleNightMode()">Toggle theme</button>
+            </div>
+          </div>
+        </div>
 
-      <button class="calc-btn calc-btn-white" onclick="calcDigit('1')">1</button>
-      <button class="calc-btn calc-btn-white" onclick="calcDigit('2')">2</button>
-      <button class="calc-btn calc-btn-white" onclick="calcDigit('3')">3</button>
-      <button class="calc-btn calc-btn-red calc-btn-op calc-btn-equals" onclick="calcOperator('=')">=</button>
+        <div class="exam-content hidden" id="examContent">
+          <section class="case-card hidden" id="caseStudyContainerWrap">
+            <div class="case-header">
+              <div>
+                <h2 class="section-title">Case Study</h2>
+                <p class="section-subtitle">Patient data, tabs, or supporting stimulus</p>
+              </div>
+            </div>
+            <div class="case-body" id="caseStudyContainer"></div>
+          </section>
 
-      <button class="calc-btn calc-btn-red calc-btn-on calc-btn-small" onclick="calcClear()">ON/C</button>
-      <button class="calc-btn calc-btn-white" onclick="calcDigit('0')">0</button>
-      <button class="calc-btn calc-btn-white" onclick="calcDecimal()">.</button>
+          <section class="question-card">
+            <div class="question-head">
+              <div class="qmeta-stack">
+                <div class="eyebrow" id="questionEyebrow">Question 1</div>
+                <h2 id="questionTitle">Ready to begin</h2>
+                <div class="section-subtitle" id="questionSubtitle">Load a file to render questions.</div>
+              </div>
+              <div class="qmeta-badges">
+                <span class="tag primary" id="questionTypeChip">Standalone</span>
+                <span class="tag" id="selectionHint">Select one</span>
+                <span class="tag hidden" id="markedChip">Marked</span>
+              </div>
+            </div>
+
+            <div class="question-body" id="question">
+              Your question stem will appear here after loading a file.
+            </div>
+
+            <div class="options-list" id="options"></div>
+
+            <div class="summary-card hidden" id="questionResultBox">
+              <div class="summary-head">
+                <div>
+                  <h3 class="section-title">Question Review</h3>
+                  <p class="section-subtitle">Scoring and pacing for the current item</p>
+                </div>
+                <span class="tag" id="resultStateTag">Pending</span>
+              </div>
+              <div class="summary-grid">
+                <div class="summary-metric"><small>Scored / Max</small><strong id="ind-score">0 / 0</strong></div>
+                <div class="summary-metric"><small>Scoring rule</small><strong id="ind-scoring-rule">0 / 0</strong></div>
+                <div class="summary-metric"><small>Time spent</small><strong id="ind-time">00m 00s</strong></div>
+                <div class="summary-metric"><small>Others avg</small><strong id="ind-avg-time">—</strong></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <aside class="result-pane">
+        <section class="explanation-card">
+          <div class="explanation-head">
+            <div>
+              <h2 class="section-title">Explanation</h2>
+              <p class="section-subtitle">Rationale, topic, and subject area</p>
+            </div>
+            <div class="inline-actions">
+              <button class="chip-btn" type="button" onclick="speakExplanation()">Speak</button>
+            </div>
+          </div>
+
+          <div class="explanation-body" id="explanation">
+            <div class="explanation-placeholder">Explanation will appear here after you submit a question.</div>
+          </div>
+
+          <div class="meta-grid">
+            <div class="meta-card"><small>Topic</small><strong id="topicMeta">—</strong></div>
+            <div class="meta-card"><small>Subject</small><strong id="subjectMeta">—</strong></div>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <nav class="bottom-bar">
+      <div class="bottom-bar-panel">
+        <div class="bottom-cluster">
+          <button class="bottom-btn" type="button" onclick="prevQ()" id="prevBtn">← Previous</button>
+        </div>
+        <div class="bottom-check-slot">
+          <button class="bottom-btn primary" type="button" onclick="check()" id="checkBtn">Check Answer</button>
+        </div>
+        <div class="bottom-cluster end">
+          <button class="bottom-btn" type="button" onclick="nextQ()" id="nextBtn">Next →</button>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <div class="modal-backdrop" id="navigatorModal" aria-hidden="true">
+    <div class="modal-sheet">
+      <div class="modal-head">
+        <div>
+          <h3>Question Navigator</h3>
+          <div class="section-subtitle">Jump directly to any question.</div>
+        </div>
+        <button class="close-btn" type="button" onclick="closeNavigator()">✕</button>
+      </div>
+      <div class="nav-legend">
+        <span><span class="legend-dot current"></span>Current</span>
+        <span><span class="legend-dot submitted"></span>Submitted</span>
+        <span><span class="legend-dot marked"></span>Marked</span>
+      </div>
+      <div class="navigator-grid" id="navigatorGrid"></div>
     </div>
   </div>
-</div>
 
-<script>
-let DATA={questionList:[]};
-let qIndex=0, selected=[], score=0, total=0, sec=0;
-let timer=null, questionsLoaded=false;
-let showScore=true, showTime=true, showQuestionNumbers=true;
-let currentFileBaseName="";
+  <div class="modal-backdrop" id="calculatorModal" aria-hidden="true">
+    <div class="calc-sheet">
+      <div class="modal-head">
+        <div>
+          <h3>Calculator</h3>
+          <div class="section-subtitle">Compact exam calculator</div>
+        </div>
+        <button class="close-btn" type="button" onclick="closeCalc()">✕</button>
+      </div>
+      <div class="calc-display" id="calc-display">0</div>
+      <div class="calc-grid">
+        <button class="calc-key op" type="button" onclick="calcClear()">C</button>
+        <button class="calc-key op" type="button" onclick="calcToggleSign()">±</button>
+        <button class="calc-key op" type="button" onclick="calcPercent()">%</button>
+        <button class="calc-key op" type="button" onclick="calcOperator('/')">÷</button>
 
-/* TYPEWRITER LOGIC */
-const terms = ["Loading... Core...", "ਦਿਲ ਦਾ ਨੀ ਮਾੜਾ...", "ਦਬੀ ਨਾ ਤੂੰ ਦੁਨੀਆ ਸਵਾਦ ਲੈਂਦੀ ਏ...", " is AI-Powered", "made Nursing Simple & Easy", "Helps in Achieving Goals", "All in One= ", "Advanced  Search Engine", "designed by- J.SINGH"];
-const termsHtml = ["Loading...<span class='pbx-glare'></span> Core...", "ਦਿਲ ਦਾ ਨੀ ਮਾੜਾ...", "ਦਬੀ ਨਾ ਤੂੰ ਦੁਨੀਆ ਸਵਾਦ ਲੈਂਦੀ ਏ...", "<span class='pbx-glare'></span> is AI-Powered", "made Nursing Simple & Easy", "Helps in Achieving Goals", "All in One= <span class='pbx-glare'></span>", "Advanced <span class='pbx-glare'></span> Search Engine", "designed by- J.SINGH"];
-const twElement = document.getElementById("typewriter");
-let termIndex = 0, charIndex = 0, isDeleting = false;
+        <button class="calc-key" type="button" onclick="calcDigit('7')">7</button>
+        <button class="calc-key" type="button" onclick="calcDigit('8')">8</button>
+        <button class="calc-key" type="button" onclick="calcDigit('9')">9</button>
+        <button class="calc-key op" type="button" onclick="calcOperator('*')">×</button>
 
-function typeEffect() {
-  if (!twElement) return;
-  if (questionsLoaded) { twElement.style.display = "none"; return; }
-  const currentTerm = terms[termIndex];
-  const currentTermHtml = termsHtml[termIndex];
-  if (isDeleting) {
-    const truncated = currentTerm.substring(0, charIndex - 1);
-    twElement.innerHTML = currentTermHtml.substring(0, currentTermHtml.indexOf(currentTerm) + truncated.length);
-    charIndex--;
-  } else {
-    const truncated = currentTerm.substring(0, charIndex + 1);
-    twElement.innerHTML = currentTermHtml.substring(0, currentTermHtml.indexOf(currentTerm) + truncated.length);
-    charIndex++;
-  }
-  let typeSpeed = isDeleting ? 40 : 60;
-  if (!isDeleting && charIndex === currentTerm.length) {
-    typeSpeed = 2000;
-    isDeleting = true;
-  } else if (isDeleting && charIndex === 0) {
-    isDeleting = false;
-    termIndex = (termIndex + 1) % terms.length;
-    typeSpeed = 1000;
-  }
-  setTimeout(typeEffect, typeSpeed);
-}
-if (twElement) { typeEffect(); }
+        <button class="calc-key" type="button" onclick="calcDigit('4')">4</button>
+        <button class="calc-key" type="button" onclick="calcDigit('5')">5</button>
+        <button class="calc-key" type="button" onclick="calcDigit('6')">6</button>
+        <button class="calc-key op" type="button" onclick="calcOperator('-')">−</button>
 
-/* NEW IN-APP AI SEARCH */
-function aiSearch(term) {
-  const modal = document.getElementById("aiModal");
-  const loader = document.getElementById("aiLoader");
-  const frame = document.getElementById("aiFrame");
+        <button class="calc-key" type="button" onclick="calcDigit('1')">1</button>
+        <button class="calc-key" type="button" onclick="calcDigit('2')">2</button>
+        <button class="calc-key" type="button" onclick="calcDigit('3')">3</button>
+        <button class="calc-key op" type="button" onclick="calcOperator('+')">+</button>
 
-  modal.classList.add("active");
-  loader.style.display = "block";
-  frame.style.opacity = "0";
+        <button class="calc-key op" type="button" onclick="calcSqrt()">√</button>
+        <button class="calc-key" type="button" onclick="calcDigit('0')">0</button>
+        <button class="calc-key" type="button" onclick="calcDecimal()">.</button>
+        <button class="calc-key equals" type="button" onclick="calcOperator('=')">=</button>
+      </div>
+    </div>
+  </div>
 
-  const prompt = `according to NCLEX-RN define  ${term} and tell me 5 key points about ${term} in short whole output within 10 lines or minimal`;
-  frame.src = `https://www.google.com/search?q=${encodeURIComponent(prompt)}&igu=1`;
+  <div class="pause-overlay" id="pauseOverlay" aria-hidden="true">
+    <div class="pause-card">
+      <h3>Paused</h3>
+      <p>The timer is stopped. Resume whenever you're ready.</p>
+      <button class="primary-btn" type="button" onclick="suspendTest()">Resume</button>
+    </div>
+  </div>
 
-  frame.onload = () => {
-    loader.style.display = "none";
-    frame.style.opacity = "1";
-  };
-}
+  <script>
+    let DATA = { questionList: [] };
+    let qIndex = 0;
+    let selected = [];
+    let score = 0;
+    let total = 0;
+    let sec = 0;
+    let timer = null;
+    let questionsLoaded = false;
+    let currentFileBaseName = "";
+    let ngnAnswers = {};
 
-function closeAI() {
-  document.getElementById("aiModal").classList.remove("active");
-}
+    const els = {
+      fileLoader: document.getElementById('fileLoader'),
+      emptyState: document.getElementById('emptyState'),
+      examContent: document.getElementById('examContent'),
+      testMetaLine: document.getElementById('testMetaLine'),
+      fileName: document.getElementById('fileName'),
+      timeBox: document.getElementById('timeBox'),
+      questionCounter: document.getElementById('questionCounter'),
+      scoreBox: document.getElementById('scoreBox'),
+      modeBox: document.getElementById('modeBox'),
+      qidDisplay: document.getElementById('qidDisplay'),
+      questionEyebrow: document.getElementById('questionEyebrow'),
+      questionTitle: document.getElementById('questionTitle'),
+      questionSubtitle: document.getElementById('questionSubtitle'),
+      questionTypeChip: document.getElementById('questionTypeChip'),
+      selectionHint: document.getElementById('selectionHint'),
+      markedChip: document.getElementById('markedChip'),
+      question: document.getElementById('question'),
+      options: document.getElementById('options'),
+      explanation: document.getElementById('explanation'),
+      topicMeta: document.getElementById('topicMeta'),
+      subjectMeta: document.getElementById('subjectMeta'),
+      questionResultBox: document.getElementById('questionResultBox'),
+      indScore: document.getElementById('ind-score'),
+      indScoringRule: document.getElementById('ind-scoring-rule'),
+      indTime: document.getElementById('ind-time'),
+      indAvgTime: document.getElementById('ind-avg-time'),
+      resultStateTag: document.getElementById('resultStateTag'),
+      markReviewBtn: document.getElementById('markReviewBtn'),
+      caseWrap: document.getElementById('caseStudyContainerWrap'),
+      caseStudyContainer: document.getElementById('caseStudyContainer'),
+      navigatorModal: document.getElementById('navigatorModal'),
+      navigatorGrid: document.getElementById('navigatorGrid'),
+      calculatorModal: document.getElementById('calculatorModal'),
+      pauseOverlay: document.getElementById('pauseOverlay'),
+      pauseBtn: document.getElementById('pauseBtn'),
+      prevBtn: document.getElementById('prevBtn'),
+      nextBtn: document.getElementById('nextBtn'),
+      checkBtn: document.getElementById('checkBtn')
+    };
 
-/* APP LOGIC */
-function clean(t){ return t ?? ""; }
+    els.fileLoader.addEventListener('change', loadFile);
 
-function formatExplanation(t){
-  if(!t) return "";
-  let text = t.replace(/\((Option|Options)[^)]+\)/gi, m => `<span class="opt-gap"><b>${m}</b></span>`);
-  text = text.replace(/<a[^>]*>(.*?)<\/a>/gi, (match, p1) => {
-    return `<span class="blue-search" onclick="aiSearch('${p1}')">${p1}</span>`;
-  });
-  return text;
-}
-
-function startTimer(){ if(timer || !questionsLoaded) return; timer=setInterval(()=>{
-    sec++;
-    if(DATA.questionList[qIndex] && !DATA.questionList[qIndex].submitted) {
-        DATA.questionList[qIndex].timeTaken = (DATA.questionList[qIndex].timeTaken || 0) + 1;
+    function clean(t) {
+      return t ?? "";
     }
-    updateTopBar();
-},1000); }
 
-function updateHeaderMeta(){
-  const testMetaLine = document.getElementById('testMetaLine');
-  if(testMetaLine){
-    const testId = currentFileBaseName || DATA.testId || DATA.testID || DATA.assessmentId || DATA.examId || '----';
-    const testMode = DATA.testMode || DATA.mode || 'Tutored, Untimed';
-    testMetaLine.innerText = `TEST ID: ${testId} (${testMode})`;
-  }
-}
-
-function updateTopBar(){
-  let p=total?Math.round((score/total)*100):0;
-  let m=String(Math.floor(sec/60)).padStart(2,'0');
-  let s=String(sec%60).padStart(2,'0');
-  const scoreEl = document.getElementById('scoreBox');
-  const timeEl = document.getElementById('timeBox');
-  const questionEl = document.getElementById('questionCounter');
-  if(scoreEl) scoreEl.innerText = showScore ? `${p}%` : '—';
-  if(timeEl) timeEl.innerText = showTime ? `${m}:${s}` : '—';
-  if(questionEl) questionEl.innerText = showQuestionNumbers ? (DATA.questionList.length ? `${qIndex+1} of ${DATA.questionList.length}` : '0 of 0') : '—';
-}
-
-function toggleScore(){ showScore=!showScore; updateTopBar(); }
-function toggleTime(){ showTime=!showTime; updateTopBar(); }
-function toggleQuestionNumbers(){ showQuestionNumbers=!showQuestionNumbers; updateTopBar(); }
-
-function triggerFileLoad(){
-  const input = document.getElementById('fileLoader');
-  if(input) input.click();
-}
-
-function futureFeature(){ return; }
-function openNotes(){ return; }
-function openFeedback(){ return; }
-
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {
-      const overlay = document.getElementById('fullscreen-overlay');
-      if (overlay) overlay.style.display = 'flex';
-    });
-  } else {
-    document.exitFullscreen();
-  }
-}
-
-function openNavigator(){
-  if(!DATA.questionList.length) return;
-  const answer = prompt(`Go to question (1-${DATA.questionList.length})`);
-  if(answer === null) return;
-  const target = parseInt(answer, 10);
-  if(Number.isInteger(target) && target >= 1 && target <= DATA.questionList.length){
-    qIndex = target - 1;
-    render();
-    updateTopBar();
-  }
-}
-
-function endTest(){
-  window.location.reload();
-}
-function suspendTest(){
-  if(timer){
-    clearInterval(timer);
-    timer = null;
-    return;
-  }
-  if(questionsLoaded){
-    startTimer();
-  }
-}
-
-function updateMarkReviewButton(){
-  const btn = document.getElementById('markReviewBtn');
-  const q = DATA.questionList[qIndex];
-  if(!btn || !q) return;
-  btn.classList.toggle('is-marked', !!q.markedForReview);
-}
-
-function toggleMarkForReview(){
-  const q = DATA.questionList[qIndex];
-  if(!q) return;
-  q.markedForReview = !q.markedForReview;
-  updateMarkReviewButton();
-}
-
-// Night Mode Toggle Function
-function toggleNightMode() {
-  console.log('[NightMode] Toggle clicked, current state:', document.body.classList.contains('night-mode'));
-  document.body.classList.toggle('night-mode');
-  const isNightMode = document.body.classList.contains('night-mode');
-  console.log('[NightMode] New state:', isNightMode);
-
-
-  // Save preference to localStorage
-  try {
-    localStorage.setItem('nightMode', isNightMode ? 'enabled' : 'disabled');
-    console.log('[NightMode] Preference saved to localStorage');
-  } catch(e) {
-    console.log('[NightMode] Could not save to localStorage:', e);
-  }
-}
-
-// Load night mode preference on page load
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('[NightMode] DOM loaded, checking preference...');
-  try {
-    const savedPreference = localStorage.getItem('nightMode');
-    console.log('[NightMode] Saved preference:', savedPreference);
-    if (savedPreference === 'enabled') {
-      document.body.classList.add('night-mode');
-      console.log('[NightMode] Applied saved preference');
+    function isMultiSelectQuestion(q) {
+      if (!q) return false;
+      if (q.maxAnswerSelection && q.maxAnswerSelection > 1) return true;
+      const correct = parseCorrectAnswers(q);
+      return correct.length > 1;
     }
-  } catch(e) {
-    console.log('[NightMode] Could not load from localStorage:', e);
-  }
-});
 
-/* --- CASE STUDY TAB LOGIC --- */
-function initTabs(container) {
-  const links = container.querySelectorAll('.nav-link');
-  links.forEach(link => {
-    link.onclick = (e) => {
-      e.preventDefault();
-      container.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-      container.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-      link.classList.add('active');
-      const targetId = link.getAttribute('data-target').replace('#', '');
-      const target = container.querySelector(`#${targetId}`);
-      if(target) target.classList.add('active');
+    function parseCorrectAnswers(q) {
+      if (!q || !q.correctAnswer) return [];
+      return q.correctAnswer.split(',').map(x => Number(x) - 1).filter(x => !Number.isNaN(x));
     }
-  });
-}
 
-function render(){
-  if(!DATA.questionList.length) return;
-  const q=DATA.questionList[qIndex];
-  selected=q.userAnswer||[];
-
-  // Show divider and right panel only when question is submitted
-  const mainEl = document.querySelector('.main');
-  if (mainEl) {
-    if (q.submitted) {
-      mainEl.classList.add('show-result');
-      mainEl.style.gridTemplateColumns = '1fr 1px 1fr';
-    } else {
-      mainEl.classList.remove('show-result');
-      mainEl.style.gridTemplateColumns = '1fr 0 0';
+    function getQuestionModeText() {
+      return DATA.testMode || DATA.mode || 'Tutored';
     }
-  }
 
-  updateTopBar();
-  updateMarkReviewButton();
-  const qidDisplay = document.getElementById("qidDisplay");
-  if (qidDisplay) {
-    qidDisplay.innerText = `QID: ${q.questionId || "----"} (${q.formatTypeId || q.questionTypeId || "----"})`;
-  }
+    function triggerFileLoad() {
+      els.fileLoader.click();
+    }
 
-  const csBox = document.getElementById("caseStudyContainer");
-  if(q.abstractId > 0 && DATA.abstractList) {
-      const abs = DATA.abstractList.find(a => a.id === q.abstractId);
-      if(abs) {
-          csBox.style.display = "block";
-          csBox.innerHTML = `<strong>CASE STUDY (Patient Data):</strong><br>` + abs.text;
-          initTabs(csBox);
+    function updateHeaderMeta() {
+      const testId = currentFileBaseName || DATA.testId || DATA.testID || DATA.assessmentId || DATA.examId || '---';
+      els.testMetaLine.textContent = `TEST ID: ${testId} • ${getQuestionModeText()}`;
+      els.fileName.textContent = currentFileBaseName || '—';
+      els.modeBox.textContent = getQuestionModeText();
+    }
+
+    function formatClock(totalSec) {
+      const minutes = String(Math.floor(totalSec / 60)).padStart(2, '0');
+      const seconds = String(totalSec % 60).padStart(2, '0');
+      return `${minutes}:${seconds}`;
+    }
+
+    function formatTimeSpent(totalSec) {
+      const minutes = String(Math.floor(totalSec / 60)).padStart(2, '0');
+      const seconds = String(totalSec % 60).padStart(2, '0');
+      return `${minutes}m ${seconds}s`;
+    }
+
+    function startTimer() {
+      if (timer || !questionsLoaded) return;
+      timer = setInterval(() => {
+        sec += 1;
+        const q = DATA.questionList[qIndex];
+        if (q && !q.submitted) {
+          q.timeTaken = (q.timeTaken || 0) + 1;
+        }
+        updateTopBar();
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
       }
-  } else {
-      csBox.style.display = "none";
-  }
+    }
 
-  let qTxt = clean(q.questionText);
-  if(q.formatTypeId === 17 && q.answerChoiceList.length > 0) {
+    function updateTopBar() {
+      const totalQuestions = DATA.questionList.length;
+      const percent = total ? Math.round((score / total) * 100) : 0;
+      els.timeBox.textContent = formatClock(sec);
+      els.questionCounter.textContent = totalQuestions ? `${qIndex + 1} / ${totalQuestions}` : '0 / 0';
+      els.scoreBox.textContent = `${percent}%`;
+      els.prevBtn.disabled = qIndex === 0;
+      els.nextBtn.disabled = qIndex >= totalQuestions - 1;
+    }
+
+    function updateMarkReviewButton() {
+      const q = DATA.questionList[qIndex];
+      if (!q) {
+        els.markReviewBtn.classList.remove('primary');
+        els.markedChip.classList.add('hidden');
+        return;
+      }
+      const marked = !!q.markedForReview;
+      els.markReviewBtn.classList.toggle('primary', marked);
+      els.markReviewBtn.textContent = marked ? 'Marked' : 'Review';
+      els.markedChip.classList.toggle('hidden', !marked);
+    }
+
+    function toggleMarkForReview() {
+      const q = DATA.questionList[qIndex];
+      if (!q) return;
+      q.markedForReview = !q.markedForReview;
+      updateMarkReviewButton();
+      renderNavigator();
+    }
+
+    function toggleNightMode() {
+      document.body.classList.toggle('dark');
       try {
-          const choiceData = JSON.parse(q.answerChoiceList[0].choice);
-          if(choiceData.elementList) {
-             choiceData.elementList.forEach(el => {
-                 let opts = `<option>Select Answer...</option>` +
-                            el.optionList.map((o, idx) => `<option value="${idx}">${o.defaultText || "Option "+(idx+1)}</option>`).join('');
-
-                 if(choiceData.choiceCollection) {
-                     const coll = choiceData.choiceCollection.find(c => c.choiceCollectionId === el.optionList[0].choiceCollectionId);
-                     if(coll) {
-                         opts = `<option>[ Select Option ]</option>` + coll.choiceList.map(c => `<option>${c.choiceText}</option>`).join('');
-                     }
-                 }
-                 qTxt = qTxt.replace(`#Element-${el.elementId}#`, `<select class="ngn-select" disabled>${opts}</select>`);
-             });
-          }
-      } catch(e) { console.log("Parsing error", e); }
-  }
-  question.innerHTML = qTxt;
-
-  if(q.submitted){
-    // ========== MODIFIED: added speaker icon next to Explanation ==========
-    explanation.innerHTML=`<div class="exp-title"><strong>Explanation</strong> <span class="speaker-icon" onclick="speakExplanation()">🔊</span></div><div class="correct-exp">${formatExplanation(q.explanationText)}</div><div class="exp-meta"><div class="exp-topic">${q.topic || "General"}</div><div class="exp-subject">NCSBN ${q.subject || "General"}</div></div>`;
-    document.getElementById("questionResultBox").style.display = "block";
-    document.getElementById("ind-score").innerText = `${q.qScore} / ${q.qMax}`;
-    document.getElementById("ind-scoring-rule").innerText = `${q.qScore} / ${q.qMax}`;
-
-    let qm = String(Math.floor(q.timeTaken/60)).padStart(2,'0');
-    let qs = String(q.timeTaken%60).padStart(2,'0');
-    document.getElementById("ind-time").innerText = `${qm} mins, ${qs} secs`;
-
-    const correct=q.correctAnswer.split(",").map(x=>+x-1);
-    const resultBox = document.getElementById("questionResultBox");
-    resultBox.classList.remove("correct-answer", "incorrect-answer", "partial-answer");
-
-    const allCorrectSelected = correct.every(i => selected.includes(i));
-    const noWrongSelected = selected.every(i => correct.includes(i));
-
-    if(allCorrectSelected && noWrongSelected && selected.length > 0){
-      resultBox.classList.add("correct-answer");
-    } else if(q.qScore > 0 && q.qScore < q.qMax){
-      resultBox.classList.add("partial-answer");
-    } else if(q.qScore === 0 || selected.length === 0){
-      resultBox.classList.add("incorrect-answer");
+        localStorage.setItem('nclex_mobile_theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+      } catch (e) {}
     }
-  } else {
-    explanation.innerText="Explanation will appear here after clicking Check.";
-    document.getElementById("questionResultBox").style.display = "none";
-  }
 
-  const correct=q.submitted ? q.correctAnswer.split(",").map(x=>+x-1) : [];
-  options.innerHTML="";
+    function restoreTheme() {
+      try {
+        const saved = localStorage.getItem('nclex_mobile_theme');
+        if (saved === 'dark') document.body.classList.add('dark');
+      } catch (e) {}
+    }
 
-  // Check if this is a questionTypeId: 3 (NGN) question that needs special rendering
-  if(q.questionTypeId === 3 && q.answerChoiceList.length > 0) {
-      // Render NGN question with sliders/dropdowns
-      const ngnContainer = renderQuestionType3(q);
-      options.appendChild(ngnContainer);
-  } else if(q.answerChoiceList.length === 1 && q.answerChoiceList[0].choice.includes('<table')) {
-      const d=document.createElement("div");
-      d.innerHTML = q.answerChoiceList[0].choice;
-      options.appendChild(d);
-  } else {
-      // Calculate total correctTaken for percentage display
-      let totalCorrectTaken = 0;
-      if(q.submitted) {
-        totalCorrectTaken = q.answerChoiceList.reduce((sum, choice) => {
-          const ct = choice.correctTaken || 0;
-          return sum + ct;
-        }, 0);
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen?.().catch(() => {});
+      } else {
+        document.exitFullscreen?.();
       }
+    }
 
-      q.answerChoiceList.forEach((c,i)=>{
-        const d=document.createElement("div");
-        d.className="option";
-        if(selected.includes(i)) d.classList.add("selected");
-        if(q.submitted){
-          if(correct.includes(i)) d.classList.add("correct");
-          if(selected.includes(i)&&!correct.includes(i)) d.classList.add("wrong");
-        }
-        d.innerHTML=c.choice;
-        d.style.position="relative";
+    function endTest() {
+      window.location.reload();
+    }
 
-        // Add percentage display after check is pressed
-        if(q.submitted && totalCorrectTaken > 0) {
-          const percentage = Math.round((c.correctTaken || 0) / totalCorrectTaken * 100);
-          const percentSpan = document.createElement("span");
-          percentSpan.style.color = "black";
-          percentSpan.innerText = ` (${percentage}%)`;
-          d.appendChild(percentSpan);
-        }
+    function suspendTest() {
+      if (!questionsLoaded) return;
+      if (timer) {
+        stopTimer();
+        els.pauseOverlay.classList.add('active');
+        els.pauseBtn.textContent = 'Resume';
+      } else {
+        els.pauseOverlay.classList.remove('active');
+        els.pauseBtn.textContent = 'Pause';
+        startTimer();
+      }
+    }
 
-        d.onclick=()=>{
-          if(q.submitted) return;
-          selected.includes(i)?selected=selected.filter(x=>x!==i):selected.push(i);
-          q.userAnswer=selected;
+    function closeNavigator() {
+      els.navigatorModal.classList.remove('active');
+    }
+
+    function openNavigator() {
+      if (!DATA.questionList.length) return;
+      renderNavigator();
+      els.navigatorModal.classList.add('active');
+    }
+
+    function renderNavigator() {
+      els.navigatorGrid.innerHTML = '';
+      DATA.questionList.forEach((q, i) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'nav-card';
+        if (i === qIndex) btn.classList.add('current');
+        if (q.submitted) btn.classList.add('submitted');
+        if (q.markedForReview) btn.classList.add('marked');
+        btn.textContent = i + 1;
+        btn.onclick = () => {
+          qIndex = i;
+          closeNavigator();
           render();
         };
-        options.appendChild(d);
+        els.navigatorGrid.appendChild(btn);
       });
-  }
-}
-
-function check(){
-  const q=DATA.questionList[qIndex];
-  if(!q || q.submitted) return;
-  q.submitted=true;
-  const correct=q.correctAnswer.split(",").map(x=>+x-1);
-  let cs=0,is=0;
-  selected.forEach(i=> correct.includes(i)?cs++:is++ );
-
-  let qPoints = Math.max(0,cs-is);
-  q.qScore = qPoints;
-  q.qMax = correct.length;
-
-  score += qPoints;
-  total += correct.length;
-  updateTopBar();
-  render();
-}
-
-function nextQ(){ if(qIndex<DATA.questionList.length-1){ qIndex++; render(); } }
-function prevQ(){ if(qIndex>0){ qIndex--; render(); } }
-
-// Keyboard navigation - Left/Right arrow keys, Number keys for options, Enter for check, + for fullscreen
-document.addEventListener('keydown', function(e) {
-  // Ignore arrow keys when typing in input fields (calculator, text inputs)
-  const tag = e.target.tagName.toLowerCase();
-  if(tag === 'input' || tag === 'textarea' || tag === 'select') return;
-
-  // Arrow keys for navigation
-  if(e.key === 'ArrowLeft') { prevQ(); }
-  if(e.key === 'ArrowRight') { nextQ(); }
-
-  // Number keys 1-9 for selecting/deselecting options
-  if(e.key >= '1' && e.key <= '9') {
-    const optionIndex = parseInt(e.key) - 1;
-    const q = DATA.questionList[qIndex];
-    if(q && !q.submitted) {
-      // Toggle option selection
-      if(selected.includes(optionIndex)) {
-        selected = selected.filter(x => x !== optionIndex);
-      } else {
-        selected.push(optionIndex);
-      }
-      q.userAnswer = selected;
-      render();
     }
-  }
 
-  // Enter key to check answer
-  if(e.key === 'Enter') {
-    const q = DATA.questionList[qIndex];
-    if(q && !q.submitted) {
-      check();
+    function openCalc() {
+      els.calculatorModal.classList.add('active');
     }
-  }
 
-  // + key to toggle fullscreen
-  if(e.key === '+' || e.key === '=') {
-    toggleFullscreen();
-  }
-});
+    function closeCalc() {
+      els.calculatorModal.classList.remove('active');
+    }
 
-function openCalc(){ document.getElementById("calculator").style.display="block"; }
-function closeCalc(){ document.getElementById("calculator").style.display="none"; }
+    const calcState = {
+      display: '0',
+      storedValue: null,
+      pendingOp: null,
+      waitingForNewValue: false
+    };
 
-let calcState = {
-  display: "0",
-  storedValue: null,
-  pendingOp: null,
-  waitingForNewValue: false,
-  memory: 0,
-  lastMemoryAction: ""
-};
+    function formatCalcValue(value) {
+      if (typeof value === 'string') return value;
+      if (!Number.isFinite(value)) return 'Error';
+      let text = value.toString();
+      if (text.length <= 12) return text;
+      text = Number(value.toPrecision(8)).toString();
+      if (text.length <= 12) return text;
+      return value.toExponential(4).replace('+', '');
+    }
 
-function formatCalcValue(value) {
-  if (typeof value === "string") return value;
-  if (!Number.isFinite(value)) return "Error";
-  let text = value.toString();
-  if (text.length <= 10) return text;
-  text = parseFloat(value.toPrecision(8)).toString();
-  if (text.length <= 10) return text;
-  return value.toExponential(4).replace("+", "");
-}
+    function updateCalcDisplay(value) {
+      calcState.display = formatCalcValue(value);
+      document.getElementById('calc-display').textContent = calcState.display;
+    }
 
-function updateCalcDisplay(value) {
-  const display = document.getElementById("calc-display");
-  const text = formatCalcValue(value);
-  calcState.display = text;
-  if (display) display.value = text;
-}
+    function currentCalcNumber() {
+      return Number(calcState.display);
+    }
 
-function calcClear() {
-  calcState = {
-    display: "0",
-    storedValue: null,
-    pendingOp: null,
-    waitingForNewValue: false,
-    memory: calcState.memory || 0,
-    lastMemoryAction: ""
-  };
-  updateCalcDisplay("0");
-}
-
-function clearCalculatorMemory() {
-  calcState.memory = 0;
-  calcState.lastMemoryAction = "";
-}
-
-function currentCalcNumber() {
-  return Number(calcState.display);
-}
-
-function calcDigit(digit) {
-  if (calcState.display === "Error") calcClear();
-
-  if (calcState.waitingForNewValue) {
-    updateCalcDisplay(digit);
-    calcState.waitingForNewValue = false;
-  } else {
-    const plain = calcState.display.replace("-", "").replace(".", "");
-    if (plain.length >= 9) return;
-    updateCalcDisplay(calcState.display === "0" ? digit : calcState.display + digit);
-  }
-  calcState.lastMemoryAction = "";
-}
-
-function calcDecimal() {
-  if (calcState.display === "Error") calcClear();
-
-  if (calcState.waitingForNewValue) {
-    updateCalcDisplay("0.");
-    calcState.waitingForNewValue = false;
-  } else if (!calcState.display.includes(".")) {
-    updateCalcDisplay(calcState.display + ".");
-  }
-  calcState.lastMemoryAction = "";
-}
-
-function computeCalc(a, b, op) {
-  switch (op) {
-    case "+": return a + b;
-    case "-": return a - b;
-    case "*": return a * b;
-    case "/": return b === 0 ? "Error" : a / b;
-    default: return b;
-  }
-}
-
-function calcOperator(nextOp) {
-  if (calcState.display === "Error") {
-    calcClear();
-    return;
-  }
-
-  const inputValue = currentCalcNumber();
-
-  if (calcState.storedValue === null) {
-    calcState.storedValue = inputValue;
-  } else if (calcState.pendingOp && !calcState.waitingForNewValue) {
-    const result = computeCalc(calcState.storedValue, inputValue, calcState.pendingOp);
-    if (result === "Error") {
-      updateCalcDisplay("Error");
+    function calcClear() {
+      calcState.display = '0';
       calcState.storedValue = null;
       calcState.pendingOp = null;
+      calcState.waitingForNewValue = false;
+      updateCalcDisplay('0');
+    }
+
+    function calcDigit(digit) {
+      if (calcState.waitingForNewValue || calcState.display === 'Error') {
+        updateCalcDisplay(digit);
+        calcState.waitingForNewValue = false;
+        return;
+      }
+      if (calcState.display === '0') {
+        updateCalcDisplay(digit);
+      } else {
+        updateCalcDisplay(`${calcState.display}${digit}`);
+      }
+    }
+
+    function calcDecimal() {
+      if (calcState.waitingForNewValue) {
+        updateCalcDisplay('0.');
+        calcState.waitingForNewValue = false;
+        return;
+      }
+      if (!calcState.display.includes('.')) {
+        updateCalcDisplay(`${calcState.display}.`);
+      }
+    }
+
+    function computeCalc(a, b, op) {
+      switch (op) {
+        case '+': return a + b;
+        case '-': return a - b;
+        case '*': return a * b;
+        case '/': return b === 0 ? NaN : a / b;
+        default: return b;
+      }
+    }
+
+    function calcOperator(op) {
+      const inputValue = currentCalcNumber();
+      if (calcState.pendingOp && !calcState.waitingForNewValue) {
+        const result = computeCalc(calcState.storedValue, inputValue, calcState.pendingOp);
+        calcState.storedValue = result;
+        updateCalcDisplay(result);
+      } else if (calcState.storedValue === null) {
+        calcState.storedValue = inputValue;
+      }
+
+      if (op === '=') {
+        calcState.pendingOp = null;
+      } else {
+        calcState.pendingOp = op;
+      }
       calcState.waitingForNewValue = true;
-      return;
     }
-    calcState.storedValue = result;
-    updateCalcDisplay(result);
-  }
 
-  calcState.waitingForNewValue = true;
-  calcState.pendingOp = nextOp === "=" ? null : nextOp;
-  calcState.lastMemoryAction = "";
-}
-
-function calcToggleSign() {
-  if (calcState.display === "Error") return;
-  const value = currentCalcNumber();
-  updateCalcDisplay(value === 0 ? 0 : value * -1);
-  calcState.lastMemoryAction = "";
-}
-
-function calcPercent() {
-  if (calcState.display === "Error") return;
-  const value = currentCalcNumber();
-  const result = (calcState.storedValue !== null && calcState.pendingOp && !calcState.waitingForNewValue)
-    ? (calcState.storedValue * value) / 100
-    : value / 100;
-  updateCalcDisplay(result);
-  calcState.lastMemoryAction = "";
-}
-
-function calcSqrt() {
-  if (calcState.display === "Error") return;
-  const value = currentCalcNumber();
-  if (value < 0) {
-    updateCalcDisplay("Error");
-    calcState.waitingForNewValue = true;
-    return;
-  }
-  updateCalcDisplay(Math.sqrt(value));
-  calcState.lastMemoryAction = "";
-}
-
-function calcMemoryAdd() {
-  if (calcState.display === "Error") return;
-  calcState.memory += currentCalcNumber();
-  calcState.waitingForNewValue = true;
-  calcState.lastMemoryAction = "";
-}
-
-function calcMemorySubtract() {
-  if (calcState.display === "Error") return;
-  calcState.memory -= currentCalcNumber();
-  calcState.waitingForNewValue = true;
-  calcState.lastMemoryAction = "";
-}
-
-function calcMemoryRecallClear() {
-  if (calcState.lastMemoryAction === "recall") {
-    clearCalculatorMemory();
-    updateCalcDisplay("0");
-    calcState.waitingForNewValue = true;
-    return;
-  }
-  updateCalcDisplay(calcState.memory);
-  calcState.waitingForNewValue = true;
-  calcState.lastMemoryAction = "recall";
-}
-
-function calcIn(v) {
-  if (/^\d$/.test(v)) {
-    calcDigit(v);
-  } else if (v === ".") {
-    calcDecimal();
-  } else if (v === "/") {
-    calcOperator("/");
-  } else if (v === "*") {
-    calcOperator("*");
-  } else if (v === "-") {
-    calcOperator("-");
-  } else if (v === "+") {
-    calcOperator("+");
-  }
-}
-
-function calcRes() { calcOperator("="); }
-
-const calc = document.getElementById("calculator");
-const header = document.getElementById("calc-header");
-let isDragging = false, offset = [0,0];
-
-if (header && calc) {
-  header.onmousedown = (e) => {
-    isDragging = true;
-    offset = [calc.offsetLeft - e.clientX, calc.offsetTop - e.clientY];
-  };
-}
-
-document.onmousemove = (e) => {
-  if (isDragging && calc) {
-    calc.style.left = (e.clientX + offset[0]) + "px";
-    calc.style.top = (e.clientY + offset[1]) + "px";
-  }
-};
-
-document.onmouseup = () => isDragging = false;
-
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeCalc();
-});
-
-function loadFile(e){
-  const f=e.target.files[0]; if(!f) return;
-  currentFileBaseName = f.name.toUpperCase().replace(/\.[^.]+$/, "");
-  const fileNameEl = document.getElementById("fileName");
-  if (fileNameEl) fileNameEl.innerText = "";
-  const r=new FileReader();
-  r.onload=()=>{
-    DATA=JSON.parse(r.result);
-    DATA.questionList.forEach(q=>{
-        q.submitted=false;
-        q.userAnswer=[];
-        q.timeTaken=0;
-        q.questionId = q.questionId || "QID-0000";
-        q.subject = q.subject || "General";
-        q.topic = q.topic || "General";
-        q.othersAvgTime = q.othersAvgTime || q.othersAvgTimeSpent || 0;
-        q.markedForReview = !!q.markedForReview;
-    });
-    qIndex=0; score=0; total=0; sec=0; questionsLoaded=true; updateHeaderMeta(); render(); startTimer();
-  };
-  r.readAsText(f);
-}
-
-/* ============================================
-   NGN (Next Generation NCLEX) SLIDER FUNCTIONS
-   For questionTypeId: 3 questions
-   ============================================ */
-
-// Global storage for NGN element answers
-let ngnAnswers = {};
-
-/**
- * Parse JSON choice data from answerChoiceList
- */
-function parseChoiceData(choiceStr) {
-    try {
-        return JSON.parse(choiceStr);
-    } catch(e) {
-        return null;
+    function calcToggleSign() {
+      const value = currentCalcNumber();
+      updateCalcDisplay(-value);
     }
-}
 
-/**
- * Render slider/dropdown for formatTypeId: 17 (JSON-based dropdown questions)
- */
-function renderNGNSlider(elementId, elementData, choiceCollection, correctAnswer) {
-    const container = document.createElement('div');
-    container.className = 'ngn-element-container';
+    function calcPercent() {
+      const value = currentCalcNumber();
+      updateCalcDisplay(value / 100);
+      calcState.waitingForNewValue = true;
+    }
 
-    const label = document.createElement('span');
-    label.className = 'ngn-element-label';
-    label.innerHTML = `<i class="fas fa-sliders-h"></i> Element ${elementId}`;
-    container.appendChild(label);
+    function calcSqrt() {
+      const value = currentCalcNumber();
+      updateCalcDisplay(value < 0 ? 'Error' : Math.sqrt(value));
+      calcState.waitingForNewValue = true;
+    }
 
-    const dropdown = document.createElement('select');
-    dropdown.className = 'ngn-dropdown-select';
-    dropdown.dataset.elementId = elementId;
-    dropdown.dataset.correctAnswer = correctAnswer;
+    function aiSearch(term) {
+      const prompt = `according to NCLEX-RN define ${term} and tell me 5 key points about ${term} in short`;
+      window.open(`https://www.google.com/search?q=${encodeURIComponent(prompt)}`, '_blank', 'noopener');
+    }
 
-    // Add default option
-    const defaultOpt = document.createElement('option');
-    defaultOpt.value = '';
-    defaultOpt.textContent = 'Select Answer...';
-    dropdown.appendChild(defaultOpt);
+    function formatExplanation(text) {
+      if (!text) return '<div class="explanation-placeholder">Explanation will appear here after you submit a question.</div>';
+      return text.replace(/<a[^>]*>(.*?)<\/a>/gi, (_, p1) => {
+        const safe = String(p1).replace(/'/g, '&apos;');
+        return `<span class="blue-search" onclick="aiSearch('${safe}')">${p1}</span>`;
+      });
+    }
 
-    // Add choices from choiceCollection
-    if (choiceCollection && choiceCollection.choiceList) {
-        choiceCollection.choiceList.forEach((choice, idx) => {
-            const opt = document.createElement('option');
-            opt.value = idx + 1;
-            opt.textContent = choice.choiceText;
-            dropdown.appendChild(opt);
+    function initTabs(container) {
+      const links = container.querySelectorAll('.nav-link');
+      links.forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          container.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+          container.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+          link.classList.add('active');
+          const targetId = link.getAttribute('data-target')?.replace('#', '');
+          const target = targetId ? container.querySelector(`#${targetId}`) : null;
+          if (target) target.classList.add('active');
         });
+      });
     }
 
-    // Handle selection
-    dropdown.addEventListener('change', function() {
-        const selectedVal = this.value;
-        ngnAnswers[`element_${elementId}`] = selectedVal;
-
-        // Visual feedback
-        this.classList.remove('correct', 'wrong');
-        if (selectedVal) {
-            this.classList.add('selected');
+    function renderCaseStudy(q) {
+      if (q.abstractId > 0 && DATA.abstractList) {
+        const abs = DATA.abstractList.find(a => a.id === q.abstractId);
+        if (abs) {
+          els.caseWrap.classList.remove('hidden');
+          els.caseStudyContainer.innerHTML = abs.text;
+          initTabs(els.caseStudyContainer);
+          return;
         }
-    });
-
-    container.appendChild(dropdown);
-    return container;
-}
-
-/**
- * Render interactive table for formatTypeId: 13 (Radio button grid)
- */
-function renderNGNTableRadio(q, correctAnswer) {
-    const container = document.createElement('div');
-    container.className = 'ngn-table-container';
-
-    const table = document.createElement('table');
-    table.className = 'ngn-interactive-table';
-
-    // Parse HTML content to extract table data
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = q.answerChoiceList[0].choice;
-    const originalTable = tempDiv.querySelector('table');
-
-    if (!originalTable) {
-        return container; // Return empty if no table found
+      }
+      els.caseWrap.classList.add('hidden');
+      els.caseStudyContainer.innerHTML = '';
     }
 
-    const rows = originalTable.querySelectorAll('tr');
-    const headers = [];
-    const dataRows = [];
+    function renderQuestionText(q) {
+      let qTxt = clean(q.questionText);
+      if (q.formatTypeId === 17 && q.answerChoiceList.length > 0) {
+        try {
+          const choiceData = JSON.parse(q.answerChoiceList[0].choice);
+          if (choiceData.elementList) {
+            choiceData.elementList.forEach(el => {
+              let opts = '<option>Select Answer...</option>' +
+                el.optionList.map((o, idx) => `<option value="${idx}">${o.defaultText || 'Option ' + (idx + 1)}</option>`).join('');
 
-    // Extract headers (Expected/Not Expected or similar)
-    rows[0].querySelectorAll('th').forEach((th, idx) => {
-        if (idx > 0) headers.push(th.textContent.trim());
-    });
+              if (choiceData.choiceCollection) {
+                const coll = choiceData.choiceCollection.find(c => c.choiceCollectionId === el.optionList[0].choiceCollectionId);
+                if (coll) {
+                  opts = '<option>[ Select Option ]</option>' + coll.choiceList.map(c => `<option>${c.choiceText}</option>`).join('');
+                }
+              }
+              qTxt = qTxt.replace(`#Element-${el.elementId}#`, `<select class="ngn-select" disabled>${opts}</select>`);
+            });
+          }
+        } catch (e) {}
+      }
+      els.question.innerHTML = qTxt;
+    }
 
-    // Build new table structure
-    const thead = document.createElement('thead');
-    const headerRow = document.createElement('tr');
+    function renderResultPanel(q) {
+      if (!q.submitted) {
+        els.explanation.innerHTML = '<div class="explanation-placeholder">Explanation will appear here after you submit a question.</div>';
+        els.topicMeta.textContent = '—';
+        els.subjectMeta.textContent = '—';
+        els.questionResultBox.classList.add('hidden');
+        els.questionResultBox.classList.remove('correct-state', 'partial-state', 'incorrect-state');
+        els.resultStateTag.textContent = 'Pending';
+        els.resultStateTag.className = 'tag';
+        return;
+      }
 
-    // First column header
-    const firstTh = document.createElement('th');
-    firstTh.textContent = 'Intervention / Finding';
-    headerRow.appendChild(firstTh);
+      els.explanation.innerHTML = formatExplanation(q.explanationText || '');
+      els.topicMeta.textContent = q.topic || 'General';
+      els.subjectMeta.textContent = `NCSBN ${q.subject || 'General'}`;
+      els.questionResultBox.classList.remove('hidden');
 
-    // Column headers
-    headers.forEach(h => {
-        const th = document.createElement('th');
-        th.textContent = h;
-        headerRow.appendChild(th);
-    });
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
+      const correct = parseCorrectAnswers(q);
+      const allCorrectSelected = correct.every(i => selected.includes(i));
+      const noWrongSelected = selected.every(i => correct.includes(i));
 
-    const tbody = document.createElement('tbody');
+      els.questionResultBox.classList.remove('correct-state', 'partial-state', 'incorrect-state');
+      els.resultStateTag.className = 'tag';
 
-    // Process each data row
-    for (let i = 1; i < rows.length; i++) {
-        const cells = rows[i].querySelectorAll('td');
-        if (cells.length < 2) continue;
+      if (allCorrectSelected && noWrongSelected && selected.length > 0) {
+        els.questionResultBox.classList.add('correct-state');
+        els.resultStateTag.textContent = 'Correct';
+        els.resultStateTag.classList.add('success');
+      } else if (q.qScore > 0 && q.qScore < q.qMax) {
+        els.questionResultBox.classList.add('partial-state');
+        els.resultStateTag.textContent = 'Partial';
+        els.resultStateTag.classList.add('warning');
+      } else {
+        els.questionResultBox.classList.add('incorrect-state');
+        els.resultStateTag.textContent = 'Incorrect';
+        els.resultStateTag.classList.add('danger');
+      }
 
-        const intervention = cells[0].textContent.trim();
-        const rowData = {
-            text: intervention,
-            radios: []
+      els.indScore.textContent = `${q.qScore ?? 0} / ${q.qMax ?? 0}`;
+      els.indScoringRule.textContent = `${q.qScore ?? 0} / ${q.qMax ?? 0}`;
+      els.indTime.textContent = formatTimeSpent(q.timeTaken || 0);
+      const avg = Number(q.othersAvgTime || q.othersAvgTimeSpent || 0);
+      els.indAvgTime.textContent = avg ? formatTimeSpent(avg) : '—';
+    }
+
+    function renderStandardOptions(q) {
+      const correct = q.submitted ? parseCorrectAnswers(q) : [];
+      const totalCorrectTaken = q.submitted
+        ? q.answerChoiceList.reduce((sum, choice) => sum + (choice.correctTaken || 0), 0)
+        : 0;
+      const multi = isMultiSelectQuestion(q);
+
+      q.answerChoiceList.forEach((choice, i) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = `option-card ${multi ? 'multi' : 'single'}`;
+        if (selected.includes(i)) button.classList.add('selected');
+        if (q.submitted) {
+          if (correct.includes(i)) button.classList.add('correct');
+          if (selected.includes(i) && !correct.includes(i)) button.classList.add('wrong');
+        }
+
+        const marker = document.createElement('span');
+        marker.className = 'option-marker';
+        marker.textContent = String.fromCharCode(65 + i);
+        button.appendChild(marker);
+
+        const body = document.createElement('span');
+        body.className = 'option-label';
+        body.innerHTML = choice.choice;
+        button.appendChild(body);
+
+        if (q.submitted && totalCorrectTaken > 0) {
+          const percent = Math.round(((choice.correctTaken || 0) / totalCorrectTaken) * 100);
+          const pill = document.createElement('span');
+          pill.className = 'option-percent';
+          pill.textContent = `Peer selection ${percent}%`;
+          button.appendChild(pill);
+        }
+
+        button.onclick = () => {
+          if (q.submitted) return;
+          if (multi) {
+            if (selected.includes(i)) {
+              selected = selected.filter(x => x !== i);
+            } else {
+              selected.push(i);
+            }
+          } else {
+            selected = selected.includes(i) ? [] : [i];
+          }
+          q.userAnswer = [...selected];
+          renderOptionsOnly(q);
         };
 
-        // Extract radio button data
-        for (let j = 1; j < cells.length; j++) {
-            const radioInput = cells[j].querySelector('input[type="radio"]');
-            if (radioInput) {
-                rowData.radios.push({
-                    id: radioInput.id,
-                    name: radioInput.name
-                });
-            }
-        }
-        dataRows.push(rowData);
+        els.options.appendChild(button);
+      });
     }
 
-    // Create interactive rows
-    dataRows.forEach((row, rowIdx) => {
-        const tr = document.createElement('tr');
+    function renderOptionsOnly(q) {
+      els.options.innerHTML = '';
+      if (q.questionTypeId === 3 && q.answerChoiceList.length > 0) {
+        els.options.appendChild(renderQuestionType3(q));
+      } else if (q.answerChoiceList.length === 1 && q.answerChoiceList[0].choice.includes('<table')) {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = q.answerChoiceList[0].choice;
+        els.options.appendChild(wrapper);
+      } else {
+        renderStandardOptions(q);
+      }
+    }
 
-        // Intervention text cell
-        const tdText = document.createElement('td');
-        tdText.textContent = row.text;
-        tr.appendChild(tdText);
+    function render() {
+      if (!DATA.questionList.length) return;
+      const q = DATA.questionList[qIndex];
+      selected = Array.isArray(q.userAnswer) ? [...q.userAnswer] : [];
 
-        // Radio button cells
-        row.radios.forEach((radio, colIdx) => {
-            const td = document.createElement('td');
+      updateTopBar();
+      updateMarkReviewButton();
+      renderNavigator();
+      renderCaseStudy(q);
+      renderQuestionText(q);
+      renderResultPanel(q);
+      renderOptionsOnly(q);
 
-            const radioGroup = document.createElement('div');
-            radioGroup.className = 'ngn-radio-group';
+      const correctCount = parseCorrectAnswers(q).length;
+      els.questionEyebrow.textContent = `Question ${qIndex + 1} of ${DATA.questionList.length}`;
+      els.questionTitle.textContent = q.questionId ? `QID ${q.questionId}` : `Question ${qIndex + 1}`;
+      els.questionSubtitle.textContent = `${q.topic || 'General'} • ${q.subject || 'General'}`;
+      els.qidDisplay.textContent = q.questionId || '—';
+      els.questionTypeChip.textContent = `Format ${q.formatTypeId || q.questionTypeId || '—'}`;
+      els.selectionHint.textContent = isMultiSelectQuestion(q) || correctCount > 1 ? 'Select all that apply' : 'Select one';
+      els.checkBtn.disabled = !!q.submitted;
+      els.checkBtn.textContent = q.submitted ? 'Answer Submitted' : 'Check Answer';
+    }
 
-            headers.forEach((header, hIdx) => {
-                const option = document.createElement('label');
-                option.className = 'ngn-radio-option';
-                option.dataset.row = rowIdx;
-                option.dataset.col = hIdx;
-                option.dataset.group = radio.name;
+    function check() {
+      const q = DATA.questionList[qIndex];
+      if (!q || q.submitted) return;
 
-                const input = document.createElement('input');
-                input.type = 'radio';
-                input.name = radio.name;
-                input.dataset.questionId = q.questionId;
-                input.dataset.correctCol = colIdx; // Store expected column
+      if (q.questionTypeId === 3) {
+        const submitBtn = els.options.querySelector('.ngn-submit-btn');
+        if (submitBtn) submitBtn.click();
+        renderResultPanel(q);
+        renderNavigator();
+        els.checkBtn.disabled = !!q.submitted;
+        els.checkBtn.textContent = q.submitted ? 'Answer Submitted' : 'Check Answer';
+        return;
+      }
 
-                input.addEventListener('change', function() {
-                    if (this.checked) {
-                        // Mark all in group
-                        document.querySelectorAll(`input[name="${this.name}"]`).forEach(r => {
-                            r.parentElement.classList.remove('selected', 'correct', 'wrong');
-                        });
-                        this.parentElement.classList.add('selected');
+      q.submitted = true;
+      const correct = parseCorrectAnswers(q);
+      let correctSelected = 0;
+      let incorrectSelected = 0;
+      selected.forEach(i => {
+        if (correct.includes(i)) correctSelected += 1;
+        else incorrectSelected += 1;
+      });
 
-                        // Store answer
-                        ngnAnswers[`${radio.name}_${rowIdx}`] = hIdx;
-                    }
-                });
+      let qPoints = correct.length <= 1
+        ? (correctSelected === 1 && incorrectSelected === 0 ? 1 : 0)
+        : Math.max(0, correctSelected - incorrectSelected);
 
-                option.appendChild(input);
-                option.appendChild(document.createTextNode(header));
-                radioGroup.appendChild(option);
-            });
+      q.qScore = qPoints;
+      q.qMax = correct.length || 1;
+      score += q.qScore;
+      total += q.qMax;
+      updateTopBar();
+      render();
+    }
 
-            td.appendChild(radioGroup);
-            tr.appendChild(td);
+    function nextQ() {
+      if (qIndex < DATA.questionList.length - 1) {
+        qIndex += 1;
+        render();
+      }
+    }
+
+    function prevQ() {
+      if (qIndex > 0) {
+        qIndex -= 1;
+        render();
+      }
+    }
+
+    function loadFile(e) {
+      const f = e.target.files[0];
+      if (!f) return;
+      currentFileBaseName = f.name.replace(/\.[^.]+$/, '').toUpperCase();
+      const reader = new FileReader();
+      reader.onload = () => {
+        DATA = JSON.parse(reader.result);
+        DATA.questionList = Array.isArray(DATA.questionList) ? DATA.questionList : [];
+        DATA.questionList.forEach((q, idx) => {
+          q.submitted = false;
+          q.userAnswer = Array.isArray(q.userAnswer) ? q.userAnswer : [];
+          q.timeTaken = 0;
+          q.qScore = 0;
+          q.qMax = 0;
+          q.questionId = q.questionId || `Q-${String(idx + 1).padStart(4, '0')}`;
+          q.subject = q.subject || 'General';
+          q.topic = q.topic || 'General';
+          q.othersAvgTime = q.othersAvgTime || q.othersAvgTimeSpent || 0;
+          q.markedForReview = !!q.markedForReview;
         });
-
-        tbody.appendChild(tr);
-    });
-
-    table.appendChild(tbody);
-    container.appendChild(table);
-
-    // Add submit button
-    const submitBtn = document.createElement('button');
-    submitBtn.className = 'ngn-submit-btn';
-    submitBtn.textContent = 'Submit Answer';
-    submitBtn.onclick = () => checkNGNAnswer(q, container, correctAnswer);
-    container.appendChild(submitBtn);
-
-    return container;
-}
-
-/**
- * Render interactive table for formatTypeId: 16 (Checkbox grid - multi-select)
- */
-function renderNGNTableCheckbox(q, correctAnswer) {
-    const container = document.createElement('div');
-    container.className = 'ngn-table-container';
-
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = q.answerChoiceList[0].choice;
-    const originalTable = tempDiv.querySelector('table');
-
-    if (!originalTable) {
-        return container;
+        qIndex = 0;
+        score = 0;
+        total = 0;
+        sec = 0;
+        questionsLoaded = true;
+        els.emptyState.classList.add('hidden');
+        els.examContent.classList.remove('hidden');
+        updateHeaderMeta();
+        updateCalcDisplay('0');
+        render();
+        stopTimer();
+        startTimer();
+      };
+      reader.readAsText(f);
     }
 
-    const table = document.createElement('table');
-    table.className = 'ngn-interactive-table';
+    function speakExplanation() {
+      const text = els.explanation.innerText || els.explanation.textContent || '';
+      if (!text.trim()) return;
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+        return;
+      }
+      const utterance = new SpeechSynthesisUtterance(text);
+      window.speechSynthesis.speak(utterance);
+    }
 
-    const rows = originalTable.querySelectorAll('tr');
-    const headers = [];
+    function parseChoiceData(choiceStr) {
+      try {
+        return JSON.parse(choiceStr);
+      } catch (e) {
+        return null;
+      }
+    }
 
-    // Extract headers
-    rows[0].querySelectorAll('th').forEach((th, idx) => {
+    function renderNGNSlider(elementId, elementData, choiceCollection, correctAnswer) {
+      const container = document.createElement('div');
+      container.className = 'ngn-element-container';
+
+      const label = document.createElement('span');
+      label.className = 'ngn-element-label';
+      label.textContent = elementData.defaultText || `Element ${elementId}`;
+      container.appendChild(label);
+
+      const dropdown = document.createElement('select');
+      dropdown.className = 'ngn-dropdown-select';
+      dropdown.dataset.elementId = elementId;
+      dropdown.dataset.correctAnswer = correctAnswer;
+
+      const defaultOpt = document.createElement('option');
+      defaultOpt.value = '';
+      defaultOpt.textContent = 'Select answer...';
+      dropdown.appendChild(defaultOpt);
+
+      if (choiceCollection && choiceCollection.choiceList) {
+        choiceCollection.choiceList.forEach((choice, idx) => {
+          const opt = document.createElement('option');
+          opt.value = idx + 1;
+          opt.textContent = choice.choiceText;
+          dropdown.appendChild(opt);
+        });
+      }
+
+      dropdown.addEventListener('change', function () {
+        ngnAnswers[`element_${elementId}`] = this.value;
+        this.classList.remove('correct', 'wrong');
+      });
+
+      container.appendChild(dropdown);
+      return container;
+    }
+
+    function renderNGNTableRadio(q, correctAnswer) {
+      const container = document.createElement('div');
+      container.className = 'ngn-table-container';
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = q.answerChoiceList[0].choice;
+      const originalTable = tempDiv.querySelector('table');
+      if (!originalTable) return container;
+
+      const table = document.createElement('table');
+      table.className = 'ngn-interactive-table';
+      const rows = originalTable.querySelectorAll('tr');
+      const headers = [];
+      rows[0]?.querySelectorAll('th').forEach((th, idx) => {
         if (idx > 0) headers.push(th.textContent.trim());
-    });
+      });
 
-    const thead = document.createElement('thead');
-    const headerRow = document.createElement('tr');
-
-    const firstTh = document.createElement('th');
-    firstTh.textContent = 'Finding / Condition';
-    headerRow.appendChild(firstTh);
-
-    headers.forEach(h => {
+      const thead = document.createElement('thead');
+      const headerRow = document.createElement('tr');
+      const firstTh = document.createElement('th');
+      firstTh.textContent = 'Intervention / Finding';
+      headerRow.appendChild(firstTh);
+      headers.forEach(h => {
         const th = document.createElement('th');
         th.textContent = h;
         headerRow.appendChild(th);
-    });
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
+      });
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
 
-    const tbody = document.createElement('tbody');
-
-    // Process data rows
-    for (let i = 1; i < rows.length; i++) {
+      const tbody = document.createElement('tbody');
+      for (let i = 1; i < rows.length; i++) {
         const cells = rows[i].querySelectorAll('td');
         if (cells.length < 2) continue;
-
-        const finding = cells[0].textContent.trim();
         const tr = document.createElement('tr');
-
         const tdText = document.createElement('td');
-        tdText.textContent = finding;
+        tdText.textContent = cells[0].textContent.trim();
         tr.appendChild(tdText);
 
-        // Checkbox cells
-        for (let j = 1; j < cells.length; j++) {
-            const checkboxInput = cells[j].querySelector('input[type="checkbox"]');
-            const td = document.createElement('td');
-
-            if (checkboxInput) {
-                const checkboxGroup = document.createElement('div');
-                checkboxGroup.className = 'ngn-checkbox-group';
-
-                headers.forEach((header, hIdx) => {
-                    const option = document.createElement('label');
-                    option.className = 'ngn-checkbox-option';
-                    option.dataset.row = i - 1;
-                    option.dataset.col = hIdx;
-
-                    const input = document.createElement('input');
-                    input.type = 'checkbox';
-                    input.dataset.questionId = q.questionId;
-                    input.dataset.row = i - 1;
-                    input.dataset.col = hIdx;
-
-                    input.addEventListener('change', function() {
-                        this.parentElement.classList.toggle('selected', this.checked);
-
-                        // Store answer
-                        const key = `finding_${i - 1}_col_${hIdx}`;
-                        ngnAnswers[key] = this.checked ? '1' : '0';
-                    });
-
-                    option.appendChild(input);
-                    option.appendChild(document.createTextNode(header));
-                    checkboxGroup.appendChild(option);
-                });
-
-                td.appendChild(checkboxGroup);
-            }
-
-            tr.appendChild(td);
-        }
-
-        tbody.appendChild(tr);
-    }
-
-    table.appendChild(tbody);
-    container.appendChild(table);
-
-    const submitBtn = document.createElement('button');
-    submitBtn.className = 'ngn-submit-btn';
-    submitBtn.textContent = 'Submit Answer';
-    submitBtn.onclick = () => checkNGNCheckboxAnswer(q, container, correctAnswer);
-    container.appendChild(submitBtn);
-
-    return container;
-}
-
-/**
- * Render click-to-highlight for formatTypeId: 25
- */
-function renderNGNHighlight(q, correctAnswer) {
-    const container = document.createElement('div');
-    container.className = 'ngn-highlight-container';
-
-    // Parse the choice to find highlightable text
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = q.answerChoiceList[0].choice;
-
-    // Find all spans with optionid attributes
-    const optionSpans = tempDiv.querySelectorAll('[optionid]');
-
-    if (optionSpans.length > 0) {
-        const textContent = tempDiv.textContent;
-
-        // Make text clickable
-        optionSpans.forEach((span, idx) => {
-            const text = span.textContent;
-            span.className = 'ngn-highlight-text';
-            span.dataset.optionId = span.getAttribute('optionid');
-
-            span.addEventListener('click', function() {
-                if (q.submitted) return;
-
-                // Toggle selection
-                if (this.classList.contains('selected')) {
-                    this.classList.remove('selected');
-                    delete ngnAnswers[`highlight_${this.dataset.optionId}`];
-                } else {
-                    // Check max selections if applicable
-                    const maxSelect = q.maxAnswerSelection || 3;
-                    const selectedCount = document.querySelectorAll('.ngn-highlight-text.selected').length;
-
-                    if (selectedCount < maxSelect) {
-                        this.classList.add('selected');
-                        ngnAnswers[`highlight_${this.dataset.optionId}`] = idx + 1;
-                    }
-                }
-            });
+        const radioName = `ngn_radio_${q.questionId}_${i}`;
+        headers.forEach((header, hIdx) => {
+          const td = document.createElement('td');
+          const option = document.createElement('label');
+          option.className = 'ngn-radio-option';
+          const input = document.createElement('input');
+          input.type = 'radio';
+          input.name = radioName;
+          input.dataset.row = i - 1;
+          input.dataset.col = hIdx;
+          input.addEventListener('change', function () {
+            document.querySelectorAll(`input[name="${radioName}"]`).forEach(r => r.parentElement.classList.remove('selected'));
+            this.parentElement.classList.add('selected');
+          });
+          option.appendChild(input);
+          option.appendChild(document.createTextNode(header));
+          td.appendChild(option);
+          tr.appendChild(td);
         });
+        tbody.appendChild(tr);
+      }
+      table.appendChild(tbody);
+      container.appendChild(table);
+
+      const submitBtn = document.createElement('button');
+      submitBtn.className = 'ngn-submit-btn';
+      submitBtn.type = 'button';
+      submitBtn.textContent = 'Submit answer';
+      submitBtn.onclick = () => checkNGNAnswer(q, container, correctAnswer);
+      container.appendChild(submitBtn);
+      return container;
     }
 
-    container.innerHTML = tempDiv.innerHTML;
+    function renderNGNTableCheckbox(q, correctAnswer) {
+      const container = document.createElement('div');
+      container.className = 'ngn-table-container';
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = q.answerChoiceList[0].choice;
+      const originalTable = tempDiv.querySelector('table');
+      if (!originalTable) return container;
 
-    const submitBtn = document.createElement('button');
-    submitBtn.className = 'ngn-submit-btn';
-    submitBtn.textContent = 'Submit Answer';
-    submitBtn.onclick = () => checkNGNHighlightAnswer(q, container, correctAnswer);
-    container.appendChild(submitBtn);
+      const table = document.createElement('table');
+      table.className = 'ngn-interactive-table';
+      const rows = originalTable.querySelectorAll('tr');
+      const headers = [];
+      rows[0]?.querySelectorAll('th').forEach((th, idx) => {
+        if (idx > 0) headers.push(th.textContent.trim());
+      });
 
-    return container;
-}
+      const thead = document.createElement('thead');
+      const headerRow = document.createElement('tr');
+      const firstTh = document.createElement('th');
+      firstTh.textContent = 'Finding / Condition';
+      headerRow.appendChild(firstTh);
+      headers.forEach(h => {
+        const th = document.createElement('th');
+        th.textContent = h;
+        headerRow.appendChild(th);
+      });
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
 
-/**
- * Render drag-drop for formatTypeId: 26 (Simple drag-drop)
- */
-function renderNGNDragDrop(q, correctAnswer) {
-    const container = document.createElement('div');
-    container.className = 'ngn-dragdrop-container';
+      const tbody = document.createElement('tbody');
+      for (let i = 1; i < rows.length; i++) {
+        const cells = rows[i].querySelectorAll('td');
+        if (cells.length < 2) continue;
+        const tr = document.createElement('tr');
+        const tdText = document.createElement('td');
+        tdText.textContent = cells[0].textContent.trim();
+        tr.appendChild(tdText);
 
-    // Create items and drop zone
-    const items = q.answerChoiceList.map((c, idx) => ({
-        id: idx + 1,
-        text: c.choice.replace(/<[^>]*>/g, '').trim()
-    }));
+        headers.forEach((header, hIdx) => {
+          const td = document.createElement('td');
+          const option = document.createElement('label');
+          option.className = 'ngn-checkbox-option';
+          const input = document.createElement('input');
+          input.type = 'checkbox';
+          input.dataset.row = i - 1;
+          input.dataset.col = hIdx;
+          input.addEventListener('change', function () {
+            this.parentElement.classList.toggle('selected', this.checked);
+          });
+          option.appendChild(input);
+          option.appendChild(document.createTextNode(header));
+          td.appendChild(option);
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      }
+      table.appendChild(tbody);
+      container.appendChild(table);
 
-    const itemContainer = document.createElement('div');
-    items.forEach(item => {
+      const submitBtn = document.createElement('button');
+      submitBtn.className = 'ngn-submit-btn';
+      submitBtn.type = 'button';
+      submitBtn.textContent = 'Submit answer';
+      submitBtn.onclick = () => checkNGNCheckboxAnswer(q, container, correctAnswer);
+      container.appendChild(submitBtn);
+      return container;
+    }
+
+    function renderNGNHighlight(q, correctAnswer) {
+      const container = document.createElement('div');
+      container.className = 'ngn-highlight-container';
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = q.answerChoiceList[0].choice;
+      const optionSpans = tempDiv.querySelectorAll('[optionid]');
+      optionSpans.forEach((span, idx) => {
+        span.className = 'ngn-highlight-text';
+        span.dataset.optionId = span.getAttribute('optionid');
+        span.addEventListener('click', function () {
+          if (q.submitted) return;
+          const maxSelect = q.maxAnswerSelection || 3;
+          const selectedCount = tempDiv.querySelectorAll('.ngn-highlight-text.selected').length;
+          if (this.classList.contains('selected')) {
+            this.classList.remove('selected');
+            delete ngnAnswers[`highlight_${this.dataset.optionId}`];
+          } else if (selectedCount < maxSelect) {
+            this.classList.add('selected');
+            ngnAnswers[`highlight_${this.dataset.optionId}`] = idx + 1;
+          }
+        });
+      });
+      container.appendChild(tempDiv);
+      const submitBtn = document.createElement('button');
+      submitBtn.className = 'ngn-submit-btn';
+      submitBtn.type = 'button';
+      submitBtn.textContent = 'Submit answer';
+      submitBtn.onclick = () => checkNGNHighlightAnswer(q, container, correctAnswer);
+      container.appendChild(submitBtn);
+      return container;
+    }
+
+    function renderNGNDragDrop(q, correctAnswer) {
+      const container = document.createElement('div');
+      container.className = 'ngn-dragdrop-container';
+      const itemsWrap = document.createElement('div');
+      const items = q.answerChoiceList.map((c, idx) => ({ id: idx + 1, text: c.choice.replace(/<[^>]*>/g, '').trim() }));
+      items.forEach(item => {
         const div = document.createElement('div');
         div.className = 'ngn-drag-item';
         div.draggable = true;
         div.dataset.id = item.id;
         div.textContent = item.text;
-
-        div.addEventListener('dragstart', function(e) {
-            e.dataTransfer.setData('text/plain', this.dataset.id);
-            this.style.opacity = '0.5';
+        div.addEventListener('dragstart', e => {
+          e.dataTransfer.setData('text/plain', item.id);
         });
+        itemsWrap.appendChild(div);
+      });
 
-        div.addEventListener('dragend', function() {
-            this.style.opacity = '1';
-        });
-
-        itemContainer.appendChild(div);
-    });
-
-    const dropZone = document.createElement('div');
-    dropZone.className = 'ngn-drop-zone';
-    dropZone.textContent = 'Drag appropriate items here';
-
-    dropZone.addEventListener('dragover', function(e) {
+      const dropZone = document.createElement('div');
+      dropZone.className = 'ngn-drop-zone';
+      dropZone.textContent = 'Drag appropriate items here';
+      dropZone.addEventListener('dragover', e => {
         e.preventDefault();
-        this.classList.add('drag-over');
-    });
-
-    dropZone.addEventListener('dragleave', function() {
-        this.classList.remove('drag-over');
-    });
-
-    dropZone.addEventListener('drop', function(e) {
+        dropZone.classList.add('drag-over');
+      });
+      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+      dropZone.addEventListener('drop', e => {
         e.preventDefault();
-        this.classList.remove('drag-over');
-
+        dropZone.classList.remove('drag-over');
         const itemId = e.dataTransfer.getData('text/plain');
-        const draggedItem = document.querySelector(`.ngn-drag-item[data-id="${itemId}"]`);
-
-        if (draggedItem && !this.contains(draggedItem)) {
-            this.appendChild(draggedItem);
-            this.textContent = '';
-            this.appendChild(draggedItem);
-            ngnAnswers[`drop_${itemId}`] = '1';
+        const draggedItem = itemsWrap.querySelector(`.ngn-drag-item[data-id="${itemId}"]`) || dropZone.querySelector(`.ngn-drag-item[data-id="${itemId}"]`);
+        if (draggedItem && !dropZone.contains(draggedItem)) {
+          if (dropZone.textContent === 'Drag appropriate items here') dropZone.textContent = '';
+          dropZone.appendChild(draggedItem);
+          ngnAnswers[`drop_${itemId}`] = '1';
         }
-    });
+      });
 
-    container.appendChild(itemContainer);
-    container.appendChild(dropZone);
+      container.appendChild(itemsWrap);
+      container.appendChild(dropZone);
+      const submitBtn = document.createElement('button');
+      submitBtn.className = 'ngn-submit-btn';
+      submitBtn.type = 'button';
+      submitBtn.textContent = 'Submit answer';
+      submitBtn.onclick = () => checkNGNDragDropAnswer(q, container, correctAnswer);
+      container.appendChild(submitBtn);
+      return container;
+    }
 
-    const submitBtn = document.createElement('button');
-    submitBtn.className = 'ngn-submit-btn';
-    submitBtn.textContent = 'Submit Answer';
-    submitBtn.onclick = () => checkNGNDragDropAnswer(q, container, correctAnswer);
-    container.appendChild(submitBtn);
-
-    return container;
-}
-
-/**
- * Render comprehensive drag-drop for formatTypeId: 27
- */
-function renderNGNComprehensive(q, correctAnswer) {
-    const container = document.createElement('div');
-    container.className = 'ngn-comprehensive-container';
-
-    try {
+    function renderNGNComprehensive(q, correctAnswer) {
+      const container = document.createElement('div');
+      container.className = 'ngn-comprehensive-container';
+      try {
         const choiceData = JSON.parse(q.answerChoiceList[0].choice);
-
         if (choiceData.elementList && choiceData.choiceCollection) {
-            // Render each element with its dropdown
-            choiceData.elementList.forEach((element, idx) => {
-                const elemContainer = document.createElement('div');
-                elemContainer.className = 'ngn-element-container';
-                elemContainer.style.marginBottom = '20px';
+          choiceData.elementList.forEach(element => {
+            const elemContainer = document.createElement('div');
+            elemContainer.className = 'ngn-element-container';
+            const label = document.createElement('div');
+            label.className = 'ngn-element-label';
+            label.textContent = element.defaultText || `Element ${element.elementId}`;
+            elemContainer.appendChild(label);
 
-                const label = document.createElement('div');
-                label.className = 'ngn-element-label';
-                label.innerHTML = element.defaultText || `Element ${element.elementId}`;
-                elemContainer.appendChild(label);
-
-                // Find corresponding choice collection
-                const coll = choiceData.choiceCollection.find(
-                    c => c.choiceCollectionId === element.optionList[0].choiceCollectionId
-                );
-
-                if (coll) {
-                    const select = document.createElement('select');
-                    select.className = 'ngn-dropdown-select';
-                    select.dataset.elementId = element.elementId;
-
-                    const defaultOpt = document.createElement('option');
-                    defaultOpt.value = '';
-                    defaultOpt.textContent = 'Select...';
-                    select.appendChild(defaultOpt);
-
-                    coll.choiceList.forEach((choice, cIdx) => {
-                        const opt = document.createElement('option');
-                        opt.value = cIdx + 1;
-                        opt.textContent = choice.choiceText;
-                        select.appendChild(opt);
-                    });
-
-                    select.addEventListener('change', function() {
-                        ngnAnswers[`element_${element.elementId}`] = this.value;
-                        this.classList.remove('correct', 'wrong');
-                        if (this.value) this.classList.add('selected');
-                    });
-
-                    elemContainer.appendChild(select);
-                }
-
-                container.appendChild(elemContainer);
-            });
-
-            const submitBtn = document.createElement('button');
-            submitBtn.className = 'ngn-submit-btn';
-            submitBtn.textContent = 'Submit Answer';
-            submitBtn.onclick = () => checkNGNComprehensiveAnswer(q, container, correctAnswer);
-            container.appendChild(submitBtn);
+            const coll = choiceData.choiceCollection.find(c => c.choiceCollectionId === element.optionList[0].choiceCollectionId);
+            if (coll) {
+              const select = document.createElement('select');
+              select.className = 'ngn-dropdown-select';
+              select.dataset.elementId = element.elementId;
+              const defaultOpt = document.createElement('option');
+              defaultOpt.value = '';
+              defaultOpt.textContent = 'Select...';
+              select.appendChild(defaultOpt);
+              coll.choiceList.forEach((choice, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx + 1;
+                opt.textContent = choice.choiceText;
+                select.appendChild(opt);
+              });
+              select.addEventListener('change', function () {
+                ngnAnswers[`element_${element.elementId}`] = this.value;
+                this.classList.remove('correct', 'wrong');
+              });
+              elemContainer.appendChild(select);
+            }
+            container.appendChild(elemContainer);
+          });
         }
-    } catch(e) {
-        console.log('Error parsing comprehensive question:', e);
-        container.innerHTML = '<p>Error loading question. Please check the data format.</p>';
+      } catch (e) {
+        container.innerHTML = '<p>Error loading comprehensive question.</p>';
+      }
+      const submitBtn = document.createElement('button');
+      submitBtn.className = 'ngn-submit-btn';
+      submitBtn.type = 'button';
+      submitBtn.textContent = 'Submit answer';
+      submitBtn.onclick = () => checkNGNComprehensiveAnswer(q, container, correctAnswer);
+      container.appendChild(submitBtn);
+      return container;
     }
 
-    return container;
-}
-
-/**
- * Check answer for radio table (formatTypeId: 13)
- */
-function checkNGNAnswer(q, container, correctAnswer) {
-    const correctSet = new Set(correctAnswer.split(',').map(x => x.trim()));
-
-    // Process all radio groups
-    const radioGroups = {};
-    document.querySelectorAll('input[type="radio"]').forEach(input => {
-        if (!radioGroups[input.name]) {
-            radioGroups[input.name] = [];
-        }
-        radioGroups[input.name].push({
-            element: input.parentElement,
-            checked: input.checked,
-            col: parseInt(input.dataset.correctCol)
-        });
-    });
-
-    let correctCount = 0;
-    let totalRequired = correctSet.size;
-
-    // Mark correct/incorrect
-    Object.values(radioGroups).forEach(group => {
-        group.forEach(item => {
-            if (q.submitted) return;
-
-            const isCorrectAnswer = correctSet.has(`${item.col + 1}_${group.indexOf(item) + 1}`) ||
-                                   correctSet.has(`${item.col + 1}`);
-
-            if (item.checked) {
-                if (isCorrectAnswer) {
-                    item.element.classList.add('correct');
-                    correctCount++;
-                } else {
-                    item.element.classList.add('wrong');
-                }
-            } else if (isCorrectAnswer) {
-                // Highlight correct answer that wasn't selected
-                item.element.classList.add('correct');
-            }
-        });
-    });
-
-    // Calculate score
-    q.qScore = correctCount;
-    q.qMax = totalRequired;
-    score += correctCount;
-    total += totalRequired;
-
-    updateTopBar();
-    q.submitted = true;
-
-    // Add feedback
-    const feedback = document.createElement('div');
-    feedback.className = `ngn-result-feedback ${correctCount === totalRequired ? 'correct' : 'wrong'}`;
-    feedback.innerHTML = correctCount === totalRequired
-        ? `<strong>✓ Correct!</strong> You got ${correctCount} out of ${totalRequired} correct.`
-        : `<strong>Partially Correct</strong> You got ${correctCount} out of ${totalRequired} correct.`;
-    container.appendChild(feedback);
-}
-
-/**
- * Check answer for checkbox table (formatTypeId: 16)
- */
-function checkNGNCheckboxAnswer(q, container, correctAnswer) {
-    const correctParts = correctAnswer.split(',').map(x => x.trim());
-    let correctCount = 0;
-
-    document.querySelectorAll('input[type="checkbox"]').forEach(input => {
-        if (q.submitted) return;
-
-        const row = input.dataset.row;
-        const col = input.dataset.col;
-        const key = `${row}_${col}`;
-        const isCorrect = correctParts.includes(`${parseInt(col) + 1}_${parseInt(row) + 1}`) ||
-                         correctParts.includes(`${parseInt(col) + 1}`);
-
-        if (input.checked) {
-            if (isCorrect) {
-                input.parentElement.classList.add('correct');
-                correctCount++;
-            } else {
-                input.parentElement.classList.add('wrong');
-            }
-        }
-    });
-
-    q.qScore = correctCount;
-    q.qMax = correctParts.length;
-    score += correctCount;
-    total += correctParts.length;
-
-    updateTopBar();
-    q.submitted = true;
-
-    const feedback = document.createElement('div');
-    feedback.className = `ngn-result-feedback ${correctCount === correctParts.length ? 'correct' : 'wrong'}`;
-    container.appendChild(feedback);
-}
-
-/**
- * Check answer for highlight question (formatTypeId: 25)
- */
-function checkNGNHighlightAnswer(q, container, correctAnswer) {
-    const correctSet = new Set(correctAnswer.split(',').map(x => x.trim()));
-    let correctCount = 0;
-
-    document.querySelectorAll('.ngn-highlight-text.selected').forEach(el => {
-        if (q.submitted) return;
-
-        const optionId = el.dataset.optionId;
-        if (correctSet.has(optionId)) {
-            el.classList.add('correct');
-            correctCount++;
+    function checkNGNAnswer(q, container, correctAnswer) {
+      const correctSet = new Set(correctAnswer.split(',').map(x => x.trim()));
+      let correctCount = 0;
+      const rows = container.querySelectorAll('tbody tr');
+      rows.forEach((row, rowIdx) => {
+        const checked = row.querySelector('input[type="radio"]:checked');
+        if (!checked) return;
+        const rowValue = `${Number(checked.dataset.col) + 1}_${rowIdx + 1}`;
+        if (correctSet.has(rowValue) || correctSet.has(String(Number(checked.dataset.col) + 1))) {
+          checked.parentElement.classList.add('correct');
+          correctCount += 1;
         } else {
+          checked.parentElement.classList.add('wrong');
+        }
+      });
+      q.qScore = correctCount;
+      q.qMax = correctSet.size || 1;
+      score += q.qScore;
+      total += q.qMax;
+      q.submitted = true;
+      updateTopBar();
+      const feedback = document.createElement('div');
+      feedback.className = `ngn-result-feedback ${correctCount === q.qMax ? 'correct' : 'wrong'}`;
+      feedback.textContent = `${correctCount} of ${q.qMax} correct.`;
+      container.appendChild(feedback);
+      renderResultPanel(q);
+      renderNavigator();
+    }
+
+    function checkNGNCheckboxAnswer(q, container, correctAnswer) {
+      const correctParts = correctAnswer.split(',').map(x => x.trim());
+      let correctCount = 0;
+      container.querySelectorAll('input[type="checkbox"]').forEach(input => {
+        const row = Number(input.dataset.row) + 1;
+        const col = Number(input.dataset.col) + 1;
+        const key = `${col}_${row}`;
+        if (!input.checked) return;
+        if (correctParts.includes(key) || correctParts.includes(String(col))) {
+          input.parentElement.classList.add('correct');
+          correctCount += 1;
+        } else {
+          input.parentElement.classList.add('wrong');
+        }
+      });
+      q.qScore = correctCount;
+      q.qMax = correctParts.length || 1;
+      score += q.qScore;
+      total += q.qMax;
+      q.submitted = true;
+      updateTopBar();
+      const feedback = document.createElement('div');
+      feedback.className = `ngn-result-feedback ${correctCount === q.qMax ? 'correct' : 'wrong'}`;
+      feedback.textContent = `${correctCount} of ${q.qMax} correct.`;
+      container.appendChild(feedback);
+      renderResultPanel(q);
+      renderNavigator();
+    }
+
+    function checkNGNHighlightAnswer(q, container, correctAnswer) {
+      const correctSet = new Set(correctAnswer.split(',').map(x => x.trim()));
+      let correctCount = 0;
+      container.querySelectorAll('.ngn-highlight-text').forEach(el => {
+        const id = el.dataset.optionId;
+        if (el.classList.contains('selected')) {
+          if (correctSet.has(id)) {
+            el.classList.add('correct');
+            correctCount += 1;
+          } else {
             el.classList.add('wrong');
+          }
+        } else if (correctSet.has(id)) {
+          el.classList.add('correct');
         }
-    });
+      });
+      q.qScore = correctCount;
+      q.qMax = correctSet.size || 1;
+      score += q.qScore;
+      total += q.qMax;
+      q.submitted = true;
+      updateTopBar();
+      const feedback = document.createElement('div');
+      feedback.className = `ngn-result-feedback ${correctCount === q.qMax ? 'correct' : 'wrong'}`;
+      feedback.textContent = `${correctCount} of ${q.qMax} correct.`;
+      container.appendChild(feedback);
+      renderResultPanel(q);
+      renderNavigator();
+    }
 
-    // Mark uncorrected correct answers
-    correctSet.forEach(id => {
-        const el = document.querySelector(`.ngn-highlight-text[data-optionid="${id}"]`);
-        if (el && !el.classList.contains('selected')) {
-            el.classList.add('correct');
-        }
-    });
-
-    q.qScore = correctCount;
-    q.qMax = correctSet.size;
-    score += correctCount;
-    total += correctSet.size;
-
-    updateTopBar();
-    q.submitted = true;
-
-    const feedback = document.createElement('div');
-    feedback.className = `ngn-result-feedback ${correctCount === correctSet.size ? 'correct' : 'wrong'}`;
-    container.appendChild(feedback);
-}
-
-/**
- * Check answer for simple drag-drop (formatTypeId: 26)
- */
-function checkNGNDragDropAnswer(q, container, correctAnswer) {
-    const correctSet = new Set(correctAnswer.split(',').map(x => x.trim()));
-    let correctCount = 0;
-
-    document.querySelectorAll('.ngn-drop-zone .ngn-drag-item').forEach(item => {
-        if (q.submitted) return;
-
-        const itemId = item.dataset.id;
-        if (correctSet.has(itemId)) {
-            item.style.borderColor = '#28a745';
-            item.style.background = 'linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%)';
-            correctCount++;
+    function checkNGNDragDropAnswer(q, container, correctAnswer) {
+      const correctSet = new Set(correctAnswer.split(',').map(x => x.trim()));
+      let correctCount = 0;
+      container.querySelectorAll('.ngn-drop-zone .ngn-drag-item').forEach(item => {
+        if (correctSet.has(item.dataset.id)) {
+          item.style.borderColor = 'var(--success)';
+          item.style.background = 'var(--success-soft)';
+          correctCount += 1;
         } else {
-            item.style.borderColor = '#dc3545';
-            item.style.background = 'linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%)';
+          item.style.borderColor = 'var(--danger)';
+          item.style.background = 'var(--danger-soft)';
         }
-    });
+      });
+      q.qScore = correctCount;
+      q.qMax = correctSet.size || 1;
+      score += q.qScore;
+      total += q.qMax;
+      q.submitted = true;
+      updateTopBar();
+      const feedback = document.createElement('div');
+      feedback.className = `ngn-result-feedback ${correctCount === q.qMax ? 'correct' : 'wrong'}`;
+      feedback.textContent = `${correctCount} of ${q.qMax} correct.`;
+      container.appendChild(feedback);
+      renderResultPanel(q);
+      renderNavigator();
+    }
 
-    q.qScore = correctCount;
-    q.qMax = correctSet.size;
-    score += correctCount;
-    total += correctSet.size;
-
-    updateTopBar();
-    q.submitted = true;
-
-    const feedback = document.createElement('div');
-    feedback.className = `ngn-result-feedback ${correctCount === correctSet.size ? 'correct' : 'wrong'}`;
-    container.appendChild(feedback);
-}
-
-/**
- * Check answer for comprehensive question (formatTypeId: 27)
- */
-function checkNGNComprehensiveAnswer(q, container, correctAnswer) {
-    const correctParts = correctAnswer.split(',').map(x => x.trim());
-    let correctCount = 0;
-
-    document.querySelectorAll('.ngn-dropdown-select').forEach(select => {
-        if (q.submitted) return;
-
-        const elementId = select.dataset.elementId;
+    function checkNGNComprehensiveAnswer(q, container, correctAnswer) {
+      const correctParts = correctAnswer.split(',').map(x => x.trim());
+      let correctCount = 0;
+      container.querySelectorAll('.ngn-dropdown-select').forEach(select => {
+        const elementId = String(select.dataset.elementId);
         const selectedVal = select.value;
-
-        // Find corresponding correct answer
         const isCorrect = correctParts.some(part => {
-            const [elemId, val] = part.split('_');
-            return elemId === elementId && val === selectedVal;
+          const [elemId, val] = part.split('_');
+          return elemId === elementId && val === selectedVal;
         });
-
-        if (selectedVal) {
-            if (isCorrect) {
-                select.classList.add('correct');
-                correctCount++;
-            } else {
-                select.classList.add('wrong');
-            }
+        if (!selectedVal) return;
+        if (isCorrect) {
+          select.classList.add('correct');
+          correctCount += 1;
+        } else {
+          select.classList.add('wrong');
         }
+      });
+      q.qScore = correctCount;
+      q.qMax = correctParts.length || 1;
+      score += q.qScore;
+      total += q.qMax;
+      q.submitted = true;
+      updateTopBar();
+      const feedback = document.createElement('div');
+      feedback.className = `ngn-result-feedback ${correctCount === q.qMax ? 'correct' : 'wrong'}`;
+      feedback.textContent = `${correctCount} of ${q.qMax} correct.`;
+      container.appendChild(feedback);
+      renderResultPanel(q);
+      renderNavigator();
+    }
+
+    function renderQuestionType3(q) {
+      const container = document.createElement('div');
+      container.className = 'ngn-question-container';
+      ngnAnswers = {};
+      switch (q.formatTypeId) {
+        case 17: {
+          try {
+            const choiceData = JSON.parse(q.answerChoiceList[0].choice);
+            if (choiceData.elementList) {
+              choiceData.elementList.forEach(element => {
+                const coll = choiceData.choiceCollection.find(c => c.choiceCollectionId === element.optionList[0].choiceCollectionId);
+                if (coll) container.appendChild(renderNGNSlider(element.elementId, element, coll, element.optionList[0].correctAnswer));
+              });
+            }
+          } catch (e) {
+            container.innerHTML = '<p>Unable to render this dropdown question.</p>';
+          }
+          break;
+        }
+        case 13:
+          container.appendChild(renderNGNTableRadio(q, q.correctAnswer));
+          break;
+        case 16:
+          container.appendChild(renderNGNTableCheckbox(q, q.correctAnswer));
+          break;
+        case 25:
+          container.appendChild(renderNGNHighlight(q, q.correctAnswer));
+          break;
+        case 26:
+          container.appendChild(renderNGNDragDrop(q, q.correctAnswer));
+          break;
+        case 27:
+          container.appendChild(renderNGNComprehensive(q, q.correctAnswer));
+          break;
+        default:
+          container.innerHTML = '<p>Question format not fully supported in this rebuild.</p>';
+      }
+      return container;
+    }
+
+    document.addEventListener('keydown', e => {
+      const tag = (e.target.tagName || '').toLowerCase();
+      if (['input', 'textarea', 'select'].includes(tag)) return;
+      if (e.key === 'ArrowLeft') prevQ();
+      if (e.key === 'ArrowRight') nextQ();
+      if (e.key === 'Enter') check();
+      if (e.key === 'Escape') {
+        closeNavigator();
+        closeCalc();
+        if (els.pauseOverlay.classList.contains('active')) suspendTest();
+      }
+      if (!questionsLoaded) return;
+      const q = DATA.questionList[qIndex];
+      if (!q || q.submitted || isMultiSelectQuestion(q)) return;
+      if (e.key >= '1' && e.key <= '9') {
+        const optionIndex = Number(e.key) - 1;
+        if (optionIndex < q.answerChoiceList.length) {
+          q.userAnswer = [optionIndex];
+          selected = [optionIndex];
+          renderOptionsOnly(q);
+        }
+      }
     });
 
-    q.qScore = correctCount;
-    q.qMax = correctParts.length;
-    score += correctCount;
-    total += correctParts.length;
+    els.navigatorModal.addEventListener('click', e => {
+      if (e.target === els.navigatorModal) closeNavigator();
+    });
 
+    els.calculatorModal.addEventListener('click', e => {
+      if (e.target === els.calculatorModal) closeCalc();
+    });
+
+    restoreTheme();
+    updateHeaderMeta();
     updateTopBar();
-    q.submitted = true;
-
-    const feedback = document.createElement('div');
-    feedback.className = `ngn-result-feedback ${correctCount === correctParts.length ? 'correct' : 'wrong'}`;
-    container.appendChild(feedback);
-}
-
-/**
- * Main function to render questionTypeId: 3 questions with appropriate slider/dropdown
- */
-function renderQuestionType3(q) {
-    const container = document.createElement('div');
-    container.className = 'ngn-question-container';
-
-    // Clear previous answers
-    ngnAnswers = {};
-
-    switch(q.formatTypeId) {
-        case 17:
-            // JSON-based dropdown question
-            try {
-                const choiceData = JSON.parse(q.answerChoiceList[0].choice);
-                if (choiceData.elementList) {
-                    choiceData.elementList.forEach(element => {
-                        const coll = choiceData.choiceCollection.find(
-                            c => c.choiceCollectionId === element.optionList[0].choiceCollectionId
-                        );
-                        if (coll) {
-                            const slider = renderNGNSlider(
-                                element.elementId,
-                                element,
-                                coll,
-                                element.optionList[0].correctAnswer
-                            );
-                            container.appendChild(slider);
-                        }
-                    });
-                }
-            } catch(e) {
-                console.log('Error rendering formatTypeId 17:', e);
-            }
-            break;
-
-        case 13:
-            // Radio button grid table
-            const radioTable = renderNGNTableRadio(q, q.correctAnswer);
-            container.appendChild(radioTable);
-            break;
-
-        case 16:
-            // Checkbox grid table
-            const checkboxTable = renderNGNTableCheckbox(q, q.correctAnswer);
-            container.appendChild(checkboxTable);
-            break;
-
-        case 25:
-            // Click-to-highlight
-            const highlightEl = renderNGNHighlight(q, q.correctAnswer);
-            container.appendChild(highlightEl);
-            break;
-
-        case 26:
-            // Simple drag-drop
-            const dragDropEl = renderNGNDragDrop(q, q.correctAnswer);
-            container.appendChild(dragDropEl);
-            break;
-
-        case 27:
-            // Comprehensive (multiple elements with dropdowns)
-            const comprehensiveEl = renderNGNComprehensive(q, q.correctAnswer);
-            container.appendChild(comprehensiveEl);
-            break;
-
-        default:
-            // Fallback: try to render as regular options
-            container.innerHTML = '<p>Question format not fully supported. Showing standard options below.</p>';
-    }
-
-    return container;
-}
-// ============================================
-// VERTICAL DIVIDER REPEATED TEXT (UPDATED)
-// ============================================
-function fillDivider() {
-  const divider = document.getElementById('dividerLine');
-  if (!divider) return;
-  const baseString = "";
-  // Repeat enough times to fill any reasonable screen height
-  // With font 6px, line-height 1 ≈ 6px per character column.
-  // 200 repetitions = 200 * 26 chars = 5200 chars → ~31200px, safe.
-  const repeatCount = 200;
-  // Join with empty string to pack tightly
-  divider.textContent = Array(repeatCount).fill(baseString).join('');
-}
-
-// Fill on initial load and whenever window resizes
-window.addEventListener('load', fillDivider);
-window.addEventListener('resize', fillDivider);
-
-// ========== SPEAK EXPLANATION FUNCTION (TOGGLE) ==========
-function speakExplanation() {
-  const correctExp = document.querySelector('.correct-exp');
-  if (!correctExp) return;
-  const text = correctExp.innerText || correctExp.textContent;
-  if (!text.trim()) return;
-
-  // If already speaking, stop and return
-  if (window.speechSynthesis.speaking) {
-    window.speechSynthesis.cancel();
-    return;
-  }
-
-  // Otherwise start speaking
-  const utterance = new SpeechSynthesisUtterance(text);
-  window.speechSynthesis.speak(utterance);
-}
-
-// ========== KEYBOARD SHORTCUTS ==========
-document.addEventListener('keydown', function(e) {
-  // Get the right panel element
-  const rightPanel = document.querySelector('#rightPanel');
-
-  // Arrow Up - Scroll right panel up
-  if (e.key === 'ArrowUp') {
-    if (rightPanel) {
-      e.preventDefault();
-      rightPanel.scrollTop -= 50; // Scroll up by 50px
-    }
-  }
-
-  // Arrow Down - Scroll right panel down
-  if (e.key === 'ArrowDown') {
-    if (rightPanel) {
-      e.preventDefault();
-      rightPanel.scrollTop += 50; // Scroll down by 50px
-    }
-  }
-
-  // Period (.) - Trigger speaker button
-  if (e.key === '.') {
-    e.preventDefault();
-    if (typeof speakExplanation === 'function') {
-      speakExplanation();
-    }
-  }
-
-  // Asterisk (*) - Toggle day/night mode
-  if (e.key === '*') {
-    e.preventDefault();
-    if (typeof toggleNightMode === 'function') {
-      toggleNightMode();
-    }
-  }
-});
-
-/* ===== Mobile helper patch ===== */
-function isMobileViewport() {
-  return window.innerWidth <= 900;
-}
-
-function positionCalculatorForViewport(force) {
-  const calculator = document.getElementById('calculator');
-  if (!calculator) return;
-  if (!isMobileViewport() && !force) return;
-
-  const wasHidden = calculator.style.display === 'none' || getComputedStyle(calculator).display === 'none';
-  const previousDisplay = calculator.style.display;
-
-  if (wasHidden) {
-    calculator.style.visibility = 'hidden';
-    calculator.style.display = 'block';
-  }
-
-  const rect = calculator.getBoundingClientRect();
-  const calcWidth = rect.width || 244;
-  const left = Math.max(8, Math.round((window.innerWidth - calcWidth) / 2));
-  const top = Math.max(88, Math.round(window.scrollY + 90));
-
-  calculator.style.left = left + 'px';
-  calculator.style.top = top + 'px';
-
-  if (wasHidden) {
-    calculator.style.display = previousDisplay || 'none';
-    calculator.style.visibility = '';
-  }
-}
-
-(function attachMobileCalculatorTouch() {
-  const calculator = document.getElementById('calculator');
-  const calcHeader = document.getElementById('calc-header');
-  if (!calculator || !calcHeader) return;
-
-  let touchDragging = false;
-  let touchOffsetX = 0;
-  let touchOffsetY = 0;
-
-  calcHeader.addEventListener('touchstart', function(e) {
-    if (!isMobileViewport() || !e.touches || !e.touches[0]) return;
-    const touch = e.touches[0];
-    const rect = calculator.getBoundingClientRect();
-    touchDragging = true;
-    touchOffsetX = touch.clientX - rect.left;
-    touchOffsetY = touch.clientY - rect.top;
-  }, { passive: true });
-
-  document.addEventListener('touchmove', function(e) {
-    if (!touchDragging || !e.touches || !e.touches[0]) return;
-    const touch = e.touches[0];
-    const maxLeft = Math.max(8, window.innerWidth - calculator.offsetWidth - 8);
-    const maxTop = Math.max(88, window.innerHeight - calculator.offsetHeight - 8);
-
-    let nextLeft = touch.clientX - touchOffsetX;
-    let nextTop = touch.clientY - touchOffsetY;
-
-    nextLeft = Math.min(Math.max(8, nextLeft), maxLeft);
-    nextTop = Math.min(Math.max(88, nextTop), maxTop);
-
-    calculator.style.left = nextLeft + 'px';
-    calculator.style.top = nextTop + 'px';
-  }, { passive: true });
-
-  document.addEventListener('touchend', function() {
-    touchDragging = false;
-  }, { passive: true });
-})();
-
-const originalOpenCalc = openCalc;
-openCalc = function() {
-  originalOpenCalc();
-  positionCalculatorForViewport(true);
-};
-
-window.addEventListener('resize', function() {
-  if (isMobileViewport()) {
-    positionCalculatorForViewport(false);
-  }
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-  positionCalculatorForViewport(false);
-});
-
-</script>
-
+    updateCalcDisplay('0');
+  </script>
 </body>
 </html>
-
